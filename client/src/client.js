@@ -1,9 +1,12 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 
 import { setContext } from "@apollo/client/link/context";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const httpLink = createHttpLink({
-  uri: process.env.URI || "http://localhost:4000/graphql",
+  uri: process.env.GQL_URI || "http://localhost:4000/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
