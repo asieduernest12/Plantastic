@@ -1,4 +1,10 @@
 import mongoose from "mongoose";
-const connection = mongoose.connect("mongodb://127.0.0.1:27017/project3db"); // change link once we have a name
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const connection = mongoose.connect(
+  process.env.MONGO_URI || "mongodb://127.0.0.1:27017/project3db"
+); // change link once we have a name
 
 export default connection;
