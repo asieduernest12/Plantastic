@@ -13,8 +13,24 @@
   --mnt: #9AD7B5;
   --grn: #A7C957;
   --drk: #013927;
-  
+
   /* We may not need the following */
   --ylw: #E1C340;
   --brn: #BF773C;
+}
+
+body {
+  background-color: var(--drk);
+  color: var(--wht);
+}
+
+a {
+  color: var(--wht);
+  font-family: var(--bodyFont);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ylw);
 }
