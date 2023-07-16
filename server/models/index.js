@@ -1,4 +1,4 @@
-const User = require('./User');
-const Plants = require('./Plant');
+import User from "./User.js";
+import Plant from "./Plant.js";
 
-module.exports = { User, Plants, };
+export default { User, Plant };
