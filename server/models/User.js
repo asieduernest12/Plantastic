@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 const Plant = require("./Plant");
 
@@ -13,24 +13,26 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    match: [/.+@.+\..+/, 'Must match an email address!'],
+    match: [/.+@.+\..+/, "Must match an email address!"],
   },
   password: {
     type: String,
     required: true,
   },
-  plants: [{
-    type: Schema.Types.ObjectId,
-    ref: "Plant",
-    index: true,
-  }],
+  plants: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Plant",
+      index: true,
+    },
+  ],
 });
 
 // set up pre-save middleware to create password
 userSchema.pre("save", async function (next) {
   if (this.isNew || this.isModified("password")) {
     const saltRounds = 10;
-    this.password = await bcrypt.hast(this.password, saltRounds);
+    this.password = await bcrypt.hash(this.password, saltRounds);
   }
 
   next();
