@@ -1,7 +1,5 @@
-const { gql } = require("apollo-server-express");
-
 // creat our typeDefs for our schema and export them
-const typeDefs = gql`
+const typeDefs = `
   type User {
     _id: ID!
     username: String!
@@ -40,13 +38,17 @@ const typeDefs = gql`
     plant(id: ID!): Plant!
     plantNotes: [Plantnote]
     plantNote: Plantnote!
+    userPlants: [Plant]
+    userPlantNotes: [Plantnote]
+    userAllPlantNotes: [Plantnote]
+    plantNotifications(id: ID!): [Plant]
   }
 
 
 
   type Mutation {
-    createUser(input: CreateUserInput!): User!
-    updateUser(id: ID!, input: UpdateUserInput!): User!
+    createUser(username: String!, email: String!, password: String!): User!
+    updateUser(id: ID!, username: String, email: String, password: String): User!
     login(email: String!, password: String!): Auth!
     addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): Plant!
     updatePlant(img: String!) : Plant!
@@ -58,4 +60,3 @@ const typeDefs = gql`
 `;
 
 export default typeDefs;
-

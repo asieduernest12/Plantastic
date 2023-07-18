@@ -1,7 +1,8 @@
-import { AuthenticationError } from "apollo-server-express";
 import sendEmailToUser from "../config/emailConfig.js";
-import { User, Plant, Plantnote } from "../models/";
-import { signToken } from "../utils/auth";
+import Plant from "../models/Plant.js";
+import User from "../models/User.js";
+import Plantnote from "../models/Plantnote.js";
+import { signToken } from "../utils/auth.js";
 
 const resolvers = {
   Query: {
@@ -107,7 +108,8 @@ const resolvers = {
           email: email,
           password: password,
         });
-
+        const response = await sendEmailToUser(user.email);
+        console.log(response);
         const token = signToken(user._id); // Generate token using user's _id
 
         return { token, user };
@@ -138,20 +140,20 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new AuthenticationError("No user found with this email address");
+        throw new Error("No user found with this email address");
       }
 
       const correctPw = await user.isCorrectPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError("Incorrect credentials");
+        throw new Error("Incorrect credentials");
       }
 
       const token = signToken(user._id);
 
       return { token, user };
     },
-
+    /* 
     // Mutation to update user information
     updateUserInformation: async (parent, { id, input }) => {
       try {
@@ -175,7 +177,7 @@ const resolvers = {
         const correctPw = await user.isCorrectPassword(currentPassword);
 
         if (!correctPw) {
-          throw new AuthenticationError("Incorrect current password");
+          throw new Error("Incorrect current password");
         }
 
         user.password = newPassword;
@@ -322,13 +324,17 @@ const resolvers = {
     // mutation to set plant notification
     setPlantNotifications: async (parent, { id, notification }) => {
       try {
-        const plant = await Plant.findByIdAndUpdate(id, { notification }, { new: true });
+        const plant = await Plant.findByIdAndUpdate(
+          id,
+          { notification },
+          { new: true }
+        );
         return plant;
       } catch (error) {
         console.log(error.message);
         throw new Error("Failed to set plant notifications");
       }
-    },
+    }, */
   },
 };
 
