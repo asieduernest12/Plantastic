@@ -1,3 +1,4 @@
+import sendEmailToUser from "../config/emailConfig.js";
 import User from "../models/User.js";
 
 const resolvers = {
@@ -13,14 +14,15 @@ const resolvers = {
   },
   Mutation: {
     createUser: async (parent, { username, email, password }) => {
-      console.log({ username, email, password, User });
       try {
         const user = await User.create({
           username: username,
           email: email,
           password: password,
         });
-        console.log({ user });
+
+        const response = await sendEmailToUser(user.email);
+        console.log({ response });
         return user;
       } catch (error) {
         console.log(error.message);
