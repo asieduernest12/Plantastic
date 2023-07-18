@@ -1,5 +1,5 @@
-const { Schema, model } = require("mongoose");
-const plantNoteSchema = require("./Plantnote");
+import mongoose, { Schema } from "mongoose";
+import plantNotesSchema from "./Plantnote.js";
 
 // create our Plant model
 const plantSchema = new Schema({
@@ -34,9 +34,9 @@ const plantSchema = new Schema({
     required: true,
     default: false,
   },
-  plantNotes: [plantNoteSchema],
+  plantNotes: [plantNotesSchema],
 });
 
-const Plant = model("Plants", plantSchema);
+const Plant = mongoose.model("Plant", plantSchema);
 
-module.exports = Plant;
+export default Plant;

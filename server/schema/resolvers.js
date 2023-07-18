@@ -1,4 +1,5 @@
 import { AuthenticationError } from "apollo-server-express";
+import sendEmailToUser from "../config/emailConfig.js";
 import { User, Plant, Plantnote } from "../models/";
 import { signToken } from "../utils/auth";
 
@@ -99,6 +100,7 @@ const resolvers = {
   Mutation: {
     // Mutation to create a new user
     createUser: async (parent, { username, email, password }) => {
+      console.log({ username, email, password, User });
       try {
         const user = await User.create({
           username: username,

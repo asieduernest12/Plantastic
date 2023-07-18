@@ -42,32 +42,14 @@ const typeDefs = gql`
     plantNote: Plantnote!
   }
 
-  input CreateUserInput {
-    username: String!
-    email: String!
-    password: String!
-  }
 
-  input UpdateUserInput {
-    username: String!
-    email: String!
-    password: String!
-  }
 
   type Mutation {
     createUser(input: CreateUserInput!): User!
     updateUser(id: ID!, input: UpdateUserInput!): User!
     login(email: String!, password: String!): Auth!
-    addPlant(
-      latinName: String!
-      commonName: String!
-      img: String!
-      idealLight: String!
-      watering: String!
-      username: String!
-      notification: Boolean!
-    ): Plant!
-    updatePlant(id: ID!, img: String!): Plant!
+    addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): Plant!
+    updatePlant(img: String!) : Plant!
     deletePlant(id: ID!): Plant!
     addPlantNote(note: String!, username: String!): Plantnote!
     deletePlantNote(id: ID!): Plantnote!
@@ -76,3 +58,4 @@ const typeDefs = gql`
 `;
 
 export default typeDefs;
+

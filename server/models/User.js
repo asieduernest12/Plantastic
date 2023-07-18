@@ -1,6 +1,5 @@
-const { Schema, model } = require("mongoose");
-const bcrypt = require("bcrypt");
-const Plant = require("./Plant");
+import mongoose, { Schema } from "mongoose";
+import bcrypt from "bcrypt";
 
 // create our User model
 const userSchema = new Schema({
@@ -47,6 +46,6 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
-const User = model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default User;
