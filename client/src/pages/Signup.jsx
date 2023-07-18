@@ -132,3 +132,119 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+
+// Paul's code 
+// import React from "react";
+// import { useState } from "react";
+
+
+// export default function Signup(){
+//     const [email, setEmail] = useState("");
+//     const [password, setPassword] = useState("");
+//     const [passwordHasErr, setPasswordHasErr] = useState(false);
+//     const [emailHasErr, setEmailHasErr] = useState(false);
+//     const [username, setUsername] = useState("");
+//     const [usernameHasErr, setUsernameHasErr] = useState(false);
+//     const [confrimPassword, setConfirmPassword] = useState("");
+
+
+//     function handleEmailChange(e){
+//         setEmail(e.target.value);
+//     }
+   
+//     function handleEmailBlur(){
+//         const regexEmail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+//         if(!regexEmail.test(email)){
+//             setEmailHasErr(true);
+//         } else {
+//             setEmailHasErr(false);
+//         }
+//     }
+//     function handlePasswordChange(e){
+//         setPassword(e.target.value);
+//     }
+    
+//     function handlePasswordBlur(){
+//         const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/;
+//         if(!regexPassword.test(password)){
+//             setPasswordHasErr(true);
+//         } else {
+//             setPasswordHasErr(false);
+//         }
+//     }
+//     function handleConfirmPasswordChange(e){
+//         setConfirmPassword(e.target.value);
+//     }
+//     function handleConfirmPasswordBlur(){
+//         const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/;
+//         // password === confirmPassword
+//         if(!regexPassword.test(confrimPassword) || password !== confrimPassword){
+//             setPasswordHasErr(true);
+//         }
+//         else {
+//             setPasswordHasErr(false);
+//         }
+//     }
+
+//    function handleUsernameChange(e){
+//         setUsername(e.target.value);
+//     }
+//     function handleUsernameBlur(){
+//         const regexUsername = /^[a-zA-Z0-9]+$/;
+//         if(!regexUsername.test(username)){
+//             setUsernameHasErr(true);
+//         } else {
+//             setUsernameHasErr(false);
+//         }
+//     }
+
+    
+    
+//     return( <div>
+//        <h1>I am the Signup page.</h1> 
+//        <form>
+//         <div>
+//             <label for="email" className="form-label"
+//             >Email:</label>
+//             <input type="text" className="form-control" id="email" placeholder="email@example.com" value = {email}
+//             onChange={handleEmailChange} onBlur=
+//             {handleEmailBlur} />
+//             {emailHasErr && <p className="text-danger">Please enter a valid email.</p>}
+//         </div>
+
+//         <div >
+//             <label for="username" 
+//             className="form-label">
+//                 Username:
+//             </label>
+//             <input type="text" className="form-control" id="username" placeholder="username" value = {username}
+//             onChange={handleUsernameChange} onBlur=
+//             {handleUsernameBlur}  />
+//             {usernameHasErr && <p className="text-danger">Please enter a valid username.</p>}
+//         </div>
+
+//         <div>
+//             <label for="password" className="form-label">
+//                 Password:</label>
+//             <input type="password" className="form-control" id="password" placeholder="password" value = {password}
+//             onChange={handlePasswordChange} onBlur=
+//             {handlePasswordBlur} />
+//             <p>password must be 8 to 20 characters </p>
+//             <p>
+//                 password must contain at least one lowercase letter, one uppercase letter, and one number.
+//             </p>
+//             {passwordHasErr && <p className="text-danger">Please enter a valid password.</p>}
+//         </div>
+//         <div>
+//             <label for="confirmPassword" className="form-label">
+//                 Confirm Password:</label>
+//             <input type="password" className="form-control" id="confirmPassword" placeholder="confirm password" value = {confrimPassword}
+//             onChange={handleConfirmPasswordChange} onBlur=
+//             {handleConfirmPasswordBlur} />
+//             {passwordHasErr && <p className="text-danger">Your password does not match.</p>}
+//         </div>
+//         </form>
+        
+//         </div>
+//         );
+// }
