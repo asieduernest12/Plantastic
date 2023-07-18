@@ -1,7 +1,7 @@
 const { Schema, Types } = require("mongoose");
 
 // create our PlantNote schema
-const plantNotesSchema = new Schema({
+const plantNoteSchema = new Schema({
     noteId: {
         type: Schema.Types.ObjectId,
         default: () => new Types.ObjectId()
@@ -22,8 +22,8 @@ const plantNotesSchema = new Schema({
     },
 });
 
-module.exports = plantNotesSchema;
-
 function dateFormat(date) {
     return date.toLocaleDateString();
 }
+
+module.exports = plantNoteSchema;

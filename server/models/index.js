@@ -1,4 +1,4 @@
 const User = require('./User');
-const Plants = require('./Plant');
+const Plant = require('./Plant');
 
-module.exports = { User, Plants, };
+module.exports = { User, Plant, };

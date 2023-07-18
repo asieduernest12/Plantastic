@@ -1,15 +1,17 @@
 const { Schema, model } = require("mongoose");
-const plantNote = require("./Plantnote");
+const plantNoteSchema = require("./Plantnote");
 
 // create our Plant model
 const plantSchema = new Schema({
   latinName: {
     type: String,
     required: true,
+    trim: true,
   },
   commonName: {
     type: String,
     required: true,
+    trim: true,
   },
   img: {
     type: String,
@@ -27,7 +29,12 @@ const plantSchema = new Schema({
     type: String,
     required: true,
   },
-  plantNotes: [plantNote],
+  notification: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  plantNotes: [plantNoteSchema],
 });
 
 const Plant = model("Plants", plantSchema);

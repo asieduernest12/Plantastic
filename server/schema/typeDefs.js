@@ -1,11 +1,11 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require("apollo-server-express");
 
+// creat our typeDefs for our schema and export them
 const typeDefs = gql`
   type User {
     _id: ID!
     username: String!
     email: String!
-    password: String!
     plants: [Plant]
   }
 
@@ -17,6 +17,7 @@ const typeDefs = gql`
     idealLight: String!
     watering: String!
     username: String!
+    notification: Boolean!
     plantNotes: [Plantnote]
   }
 
@@ -28,30 +29,49 @@ const typeDefs = gql`
   }
 
   type Auth {
-    token: ID!
+    token: ID
     user: User
   }
 
   type Query {
     users: [User]
-    user(id: String!): User!
+    user(id: ID!): User!
     plants: [Plant]
-    plant(id: String!): Plant!
+    plant(id: ID!): Plant!
     plantNotes: [Plantnote]
     plantNote: Plantnote!
   }
 
+  input CreateUserInput {
+    username: String!
+    email: String!
+    password: String!
+  }
 
+  input UpdateUserInput {
+    username: String!
+    email: String!
+    password: String!
+  }
 
   type Mutation {
-    createUser(username: String!, email: String!, password: String!): User!
-    updateUser(username: String!, email: String!, password: String!): User!
+    createUser(input: CreateUserInput!): User!
+    updateUser(id: ID!, input: UpdateUserInput!): User!
     login(email: String!, password: String!): Auth!
-    addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): Plant!
-    updatePlant(img: String!) : Plant!
+    addPlant(
+      latinName: String!
+      commonName: String!
+      img: String!
+      idealLight: String!
+      watering: String!
+      username: String!
+      notification: Boolean!
+    ): Plant!
+    updatePlant(id: ID!, img: String!): Plant!
     deletePlant(id: ID!): Plant!
-    addPlantNote (note: String!, username: String!): Plantnote!
-    deletePlantNote (id: ID!): Plantnote!
+    addPlantNote(note: String!, username: String!): Plantnote!
+    deletePlantNote(id: ID!): Plantnote!
+    updatePlantNote(id: ID!, note: String!): Plantnote!
   }
 `;
 

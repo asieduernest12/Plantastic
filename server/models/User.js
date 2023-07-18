@@ -8,12 +8,16 @@ const userSchema = new Schema({
     type: String,
     required: true,
     unique: true,
+    minlength: 4,
+    maxlength: 20,
+    trim: true, // Trim leading and trailing white spaces
   },
   email: {
     type: String,
     required: true,
     unique: true,
     match: [/.+@.+\..+/, "Must match an email address!"],
+    trim: true, // Trim leading and trailing white spaces
   },
   password: {
     type: String,
