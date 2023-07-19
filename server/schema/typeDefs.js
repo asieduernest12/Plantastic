@@ -44,18 +44,18 @@ const typeDefs = `
     plantNotifications(id: ID!): [Plant]
   }
 
-
-
   type Mutation {
     createUser(username: String!, email: String!, password: String!): User!
-    updateUser(id: ID!, username: String, email: String, password: String): User!
+    updateUser(id: ID!, username: String, email: String): User!
+    changePassword(id: ID!, currentPassword: String!, newPassword: String!): User!
     login(email: String!, password: String!): Auth!
     addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): Plant!
-    updatePlant(img: String!) : Plant!
+    updatePlant(id: ID!, img: String!) : Plant!
     deletePlant(id: ID!): Plant!
-    addPlantNote(note: String!, username: String!): Plantnote!
-    deletePlantNote(id: ID!): Plantnote!
-    updatePlantNote(id: ID!, note: String!): Plantnote!
+    addPlantNoteToPlant(id: ID!, note: String!, username: String!): Plantnote!
+    deletePlantNote(noteId: ID!): Plantnote!
+    updatePlantNote(noteID: ID!, note: String!,): Plantnote!
+    setPlantNotifications(id: ID!, notification: Boolean!): Plant!
   }
 `;
 
