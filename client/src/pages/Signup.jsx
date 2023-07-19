@@ -26,6 +26,60 @@ function Copyright(props) {
     </Typography>
   );
 }
+// class ParentComponent extends React.Component {
+//   state = {
+//     validEmail: false,
+//     email: '',
+//   };
+
+//   onChange = (e) => {
+//     this.setState({
+//       email: e.target.value
+//     });
+//   }
+
+//   validateEmail = (e) => {
+//     const email = e.target.value;
+//     if (!email || invalidEmail(email)) {
+//       this.setState({
+//         validEmail: true,
+//       });
+//     } else {
+//       this.setState({
+//         validEmail: false,
+//       });
+//     }
+//   }
+
+//   render () {
+//     const { validEmail, email } = this.state;
+
+//     return (
+//       <ChildComponent 
+//         email={email}
+//         validEmail={validEmail}
+//         onChange={this.onChange}
+//         validateEmail={this.validateEmail}
+//       />
+//     );
+//   }
+// }
+
+// const ChildComponent = (props) => (
+//   <TextField
+//     margin="dense"
+//     id="emailAddress"
+//     name="email"
+//     label="email"
+//     type="email"
+//     onChange={props.onChange}
+//     onBlur={props.validateEmail}
+//     value={props.email}
+//     error={props.validEmail}
+//     helperText={props.validEmail ? 'Please enter a valid Email' : ' '}
+//     fullWidth
+//   />
+// );
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -63,7 +117,7 @@ export default function SignUp() {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  autoComplete="given-name"
+                  // autoComplete="given-name"
                   name="firstName"
                   required
                   fullWidth
@@ -72,7 +126,7 @@ export default function SignUp() {
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -81,8 +135,8 @@ export default function SignUp() {
                   name="lastName"
                   autoComplete="family-name"
                 />
-              </Grid>
-              <Grid item xs={12}>
+              </Grid> */}
+              <Grid  item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -132,6 +186,8 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
+
+
 
 // Paul's code 
 // import React from "react";
