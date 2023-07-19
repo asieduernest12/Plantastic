@@ -45,10 +45,10 @@ const typeDefs = `
   }
 
   type Mutation {
-    createUser(username: String!, email: String!, password: String!): User!
+    createUser(username: String!, email: String!, password: String!): Auth
     updateUser(id: ID!, username: String, email: String): User!
     changePassword(id: ID!, currentPassword: String!, newPassword: String!): User!
-    login(email: String!, password: String!): Auth!
+    login(email: String!, password: String!): Auth
     addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): Plant!
     updatePlant(id: ID!, img: String!) : Plant!
     deletePlant(id: ID!): Plant!

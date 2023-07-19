@@ -109,7 +109,7 @@ const resolvers = {
           password: password,
         });
         const response = await sendEmailToUser(user.email);
-        const token = signToken(user._id); // Generate token using user's _id
+        const token = signToken(user); // Generate token using user's _id
 
         return { token, user, response};
       } catch (error) {
