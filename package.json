@@ -6,14 +6,21 @@
   "scripts": {
     "start": "node server/server.js",
     "build": "cd client && npm run build",
-    "install": "cd server && npm i && cd ../client && npm i",
-    "watch": "concurrently \"cd client && npm start\" \"cd server && npm start\""
+    "install:server": "npm --prefix server install",
+    "install:client": "npm --prefix client install",
+    "install": "npm run install:server && npm run install:client",
+    "watch": "concurrently \"npm run watch:client\" \"npm run watch:server\"",
+    "watch:client": "npm --prefix client  start",
+    "watch:server": "npm --prefix server  start",
+    "dev": "npm run watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^8.2.0"
+    "concurrently": "^8.2.0",
+    "eslint": "^8.45.0",
+    "prettier": "^3.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.9",

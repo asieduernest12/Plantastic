@@ -9,14 +9,16 @@ import { Box } from "@mui/material";
 import Login from "./pages/Login";
 function App() {
   return (
-    <Box className="App " display={"flex"} sx={{ height: "100%" }}>
+    <Box className="App debug-outline" display={"flex"} sx={{ height: "100vh",width:'100wh' }}>
       <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
+      <Box sx={{ marginTop: "60px", width: "100%" }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </Box>
     </Box>
   );
 }

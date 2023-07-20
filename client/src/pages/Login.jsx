@@ -1,6 +1,6 @@
 // import React, {useState} from "react";
 // import { useHistory } from "react-router-dom";
-import { FormGroup } from "@mui/material";
+import { FormGroup, Stack } from "@mui/material";
 import { useState } from "react";
 import { useNavigation } from "react-router-dom";
 // import { User } from "../models/User";
@@ -123,10 +123,17 @@ export default function Login() {
     }
   }
   return (
-    <form>
-      <h1>I am the Login page.</h1>
-      <div>
-        <form onSubmit={handleLogin}>
+    <Stack
+      direction="row"
+      sx={{ height: "100%", width: "100%", placeContent: "center" }}
+    >
+      <form
+        className="debug-outline"
+        onSubmit={handleLogin}
+        style={{ flex: "none", width: "clamp(300px,80%,600px" }}
+      >
+        <h1>I am the Login page.</h1>
+        <div>
           <div>
             <label htmlFor="email" className="form-label">
               Email
@@ -164,8 +171,8 @@ export default function Login() {
           <button type="submit" className="btn btn-primary">
             Login
           </button>
-        </form>
-      </div>
-    </form>
+        </div>
+      </form>
+    </Stack>
   );
 }
