@@ -24,4 +24,4 @@ export default function Home() {
       </Box>
     </Box>
   );
-}
+} //We updated a lot of the UI 
