@@ -1,11 +1,9 @@
 @import url('https://fonts.cdnfonts.com/css/pacifico');
 @import url('https://fonts.cdnfonts.com/css/lato');
-
 :root {
   /* Fonts */
   --mainFont: font-family: 'Pacifico', sans-serif;
   --bodyFont: font-family: 'Lato', sans-serif;
-
   /* Brand Colors */
   --wht: #FCFEF1;
   --blk: #161913;
@@ -13,24 +11,21 @@
   --mnt: #9AD7B5;
   --grn: #A7C957;
   --drk: #013927;
-
   /* We may not need the following */
   --ylw: #E1C340;
   --brn: #BF773C;
 }
-
-body {
+/* body {
   background-color: var(--drk);
   color: var(--wht);
-}
-
+} */
+/*
 a {
   color: var(--wht);
   font-family: var(--bodyFont);
   font-weight: bold;
   text-decoration: none;
-}
-
-a:hover {
+} */
+/* a:hover {
   color: var(--ylw);
-}
+} */
