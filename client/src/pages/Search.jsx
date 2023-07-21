@@ -52,7 +52,11 @@ export default function Search() {
         }}
       >
         <FormControl sx={{ width: "100%" }} className="d-outline">
-          {loading && <div>Loading...</div>}
+          {loading && (
+            <div>
+              <i class="fa-solid fa-seedling fa-bounce"></i>Loading...
+            </div>
+          )}
           {!loading && (
             <>
               <TextField
