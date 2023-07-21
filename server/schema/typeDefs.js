@@ -20,7 +20,7 @@ const typeDefs = `
   }
 
   type Plantnote {
-    _id: ID!
+    noteId: String!
     note: String!
     username: String!
     createdAt: String
@@ -36,8 +36,8 @@ const typeDefs = `
     user(id: ID!): User!
     plants: [Plant]
     plant(id: ID!): Plant!
-    plantNotes: [Plantnote]
-    plantNote: Plantnote!
+    plantNotes(id: ID!): [Plantnote]
+    plantNote(id: ID!, noteId: String!): Plantnote!
     userPlants: [Plant]
     userPlantNotes: [Plantnote]
     userAllPlantNotes: [Plantnote]
@@ -49,12 +49,12 @@ const typeDefs = `
     updateUser(id: ID!, username: String, email: String): User!
     changePassword(id: ID!, currentPassword: String!, newPassword: String!): User!
     login(email: String!, password: String!): Auth
-    addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): Plant!
+    addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): User!
     updatePlant(id: ID!, img: String!) : Plant!
-    deletePlant(id: ID!): Plant!
-    addPlantNoteToPlant(id: ID!, note: String!, username: String!): Plantnote!
-    deletePlantNote(noteId: ID!): Plantnote!
-    updatePlantNote(noteID: ID!, note: String!,): Plantnote!
+    deletePlant(id: ID!): User!
+    addPlantNoteToPlant(id: ID! note: String!, username: String!): Plantnote!
+    deletePlantNote(noteId: String!): Plantnote!
+    updatePlantNote(noteId: String!, note: String!,): Plantnote!
     setPlantNotifications(id: ID!, notification: Boolean!): Plant!
   }
 `;
