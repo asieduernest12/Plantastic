@@ -76,6 +76,7 @@ export default function Search() {
               <SearchResultDetail
                 imgLink={result?.item?.Img}
                 title={result?.item?.["Latin name"]}
+                data={result}
               />
             ))}
         </Stack>

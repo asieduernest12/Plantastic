@@ -1,6 +1,6 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 
-export default function SearchResultDetail({ imgLink, title }) {
+export default function SearchResultDetail({ imgLink, title, data }) {
   return (
     <Box
       sx={{
