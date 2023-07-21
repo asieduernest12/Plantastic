@@ -29,14 +29,14 @@ export default function Login(){
             const response = await loginUser({
                 variables: {...userFormData}
             });
-            const {token, user} = response.data.login;
+            console.log(response);
+            const {token} = response.data.login;
             Auth.login(token);
         } catch(err){
             
             setShowAlert(true);
         }
         setUserFormData({
-            username: '',
             email: '',
             password: '',
         });

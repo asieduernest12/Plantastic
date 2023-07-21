@@ -65,7 +65,7 @@ export default function SignUp() {
         const response = await addUser({
             variables: {...userFormData}
         });
-        const {token, user} = response.data.addUser;
+        const {token} = response.data.addUser;
         Auth.login(token);
     }
     catch(err){
