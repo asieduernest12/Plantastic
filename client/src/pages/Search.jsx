@@ -7,15 +7,14 @@ export default function Search() {
   const [search, setSearch] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  // make acolumn with a input text field on top,
-  // a button below it and a list 3 random plant names
+
   async function handleApi() {
     setLoading(true);
     const url = `https://house-plants2.p.rapidapi.com/search?query=${search}`;
     const options = {
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": "8316de9550msh6c76faa12e41f88p1ab3e3jsn6c4263cb35dc",
+        "X-RapidAPI-Key": process.env.REACT_APP_APIKEY,
         "X-RapidAPI-Host": "house-plants2.p.rapidapi.com",
       },
     };
