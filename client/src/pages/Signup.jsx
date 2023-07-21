@@ -15,6 +15,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "../../src/App.css";
+import { useMutation} from '@apollo/client';
+import { ADD_USER } from "../utils/mutations";
+import Auth from "../utils/auth";
+
 
 function Copyright(props) {
   return (
@@ -28,7 +32,22 @@ function Copyright(props) {
     </Typography>
   );
 }
-export default function Signup(){
+// export default function Signup(){
+//     const [email, setEmail] = useState("");
+//     const [password, setPassword] = useState("");
+//     const [passwordHasErr, setPasswordHasErr] = useState(false);
+//     const [emailHasErr, setEmailHasErr] = useState(false);
+//     const [username, setUsername] = useState("");
+//     const [usernameHasErr, setUsernameHasErr] = useState(false);
+//     const [confrimPassword, setConfirmPassword] = useState("");
+// }
+
+
+// TODO remove, this demo shouldn't need to reset the theme.
+
+const defaultTheme = createTheme();
+
+export default function SignUp() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordHasErr, setPasswordHasErr] = useState(false);
@@ -36,75 +55,60 @@ export default function Signup(){
     const [username, setUsername] = useState("");
     const [usernameHasErr, setUsernameHasErr] = useState(false);
     const [confrimPassword, setConfirmPassword] = useState("");
-}
-// class ParentComponent extends React.Component {
-//   state = {
-//     validEmail: false,
-//     email: '',
-//   };
+    const [userFormData, setUserFormData] = useState({username: '', email: '', password: ''});
+    const [validated] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const [addUser, {error}] = useMutation(ADD_USER);
 
-//   onChange = (e) => {
-//     this.setState({
-//       email: e.target.value
-//     });
-//   }
 
-//   validateEmail = (e) => {
-//     const email = e.target.value;
-//     if (!email || invalidEmail(email)) {
-//       this.setState({
-//         validEmail: true,
-//       });
-//     } else {
-//       this.setState({
-//         validEmail: false,
-//       });
-//     }
-//   }
 
-//   render () {
-//     const { validEmail, email } = this.state;
 
-//     return (
-//       <ChildComponent 
-//         email={email}
-//         validEmail={validEmail}
-//         onChange={this.onChange}
-//         validateEmail={this.validateEmail}
-//       />
-//     );
-//   }
-// }
-
-// const ChildComponent = (props) => (
-//   <TextField
-//     margin="dense"
-//     id="emailAddress"
-//     name="email"
-//     label="email"
-//     type="email"
-//     onChange={props.onChange}
-//     onBlur={props.validateEmail}
-//     value={props.email}
-//     error={props.validEmail}
-//     helperText={props.validEmail ? 'Please enter a valid Email' : ' '}
-//     fullWidth
-//   />
-// );
-
-// TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme();
-
-export default function SignUp() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    try{
+        const response = await addUser({
+            variables: {...userFormData}
+        });
+        const {token, user} = response.data.addUser;
+        Auth.login(token);
+    }
+    catch(err){
+        console.error(err);
+        setShowAlert(true);
+    }
+    setUserFormData({
+    
+    email: "",
+    password: "",
+    username: "",
+ 
     });
   };
+  function handleEmailBlur(){
+        const regexEmail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        if(!regexEmail.test(email)){
+            setEmailHasErr(true);
+        } else {
+            setEmailHasErr(false);
+        }
+    }
+
+  function handlePasswordChange(e){
+      setPassword(e.target.value);
+    }
+    function handlePasswordBlur(){
+    const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,10}$/;
+    if(!regexPassword.test(password)){
+      setPasswordHasErr(true);
+    } else {
+      setPasswordHasErr(false);
+    }
+   }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -148,7 +152,8 @@ export default function SignUp() {
                 />
               </Grid> */}
               <Grid  item xs={12}>
-                <TextField
+                <TextField onBlur={handleEmailBlur}
+                {...(emailHasErr && {error:true, helperText:"Please enter a valid email"})}
                   required
                   fullWidth
                   id="email"
@@ -158,7 +163,8 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextField onBlur={handlePasswordBlur}
+                {...(passwordHasErr && {error:true, helperText:"Password must be 6-10 characters and contain at least one number, one uppercase letter, and one lowercase letter"})}
                   required
                   fullWidth
                   name="password"
@@ -175,14 +181,15 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
+            <Button 
+
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign Up
-            </Button>
+            </Button >
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="#" variant="body2">
@@ -315,3 +322,58 @@ export default function SignUp() {
 //         </div>
 //         );
 // }
+
+// class ParentComponent extends React.Component {
+//   state = {
+//     validEmail: false,
+//     email: '',
+//   };
+
+//   onChange = (e) => {
+//     this.setState({
+//       email: e.target.value
+//     });
+//   }
+
+//   validateEmail = (e) => {
+//     const email = e.target.value;
+//     if (!email || invalidEmail(email)) {
+//       this.setState({
+//         validEmail: true,
+//       });
+//     } else {
+//       this.setState({
+//         validEmail: false,
+//       });
+//     }
+//   }
+
+//   render () {
+//     const { validEmail, email } = this.state;
+
+//     return (
+//       <ChildComponent 
+//         email={email}
+//         validEmail={validEmail}
+//         onChange={this.onChange}
+//         validateEmail={this.validateEmail}
+//       />
+//     );
+//   }
+// }
+
+// const ChildComponent = (props) => (
+//   <TextField
+//     margin="dense"
+//     id="emailAddress"
+//     name="email"
+//     label="email"
+//     type="email"
+//     onChange={props.onChange}
+//     onBlur={props.validateEmail}
+//     value={props.email}
+//     error={props.validEmail}
+//     helperText={props.validEmail ? 'Please enter a valid Email' : ' '}
+//     fullWidth
+//   />
+// );

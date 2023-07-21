@@ -1,7 +1,52 @@
+import React, {useState} from "react";
+import { useHistory } from "react-router-dom";
+import { useMutation} from '@apolo/client';
+import { LOGIN_USER } from "../utils/mutations";
+import Auth from "../utils/auth";
 
-// import React, {useState} from "react";
-// import { useHistory } from "react-router-dom";
 
+export default function Login(){
+    const[userFormData, setUserFormData] = useState({email: '', password: ''});
+    const [validated] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const handleInputChange = (event) => {
+        const {name, value} = event.target;
+        setUserFormData({
+            ...userFormData,
+            [name]: value,
+        });
+    }
+    const [loginUser, {error}] = useMutation(LOGIN_USER);
+    const handleFormSubmit = async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if(form.checkValidity() === false){
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        try{
+            const response = await loginUser({
+                variables: {...userFormData}
+            });
+            const {token, user} = response.data.login;
+            Auth.login(token);
+        } catch(err){
+            
+            setShowAlert(true);
+        }
+        setUserFormData({
+            username: '',
+            email: '',
+            password: '',
+        });
+};
+
+    return( 
+    <div>
+           
+            </div>
+        );
+};
 // import { User } from "../models/User";
 
 // export default function Login(){
