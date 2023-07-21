@@ -1,10 +1,11 @@
 import { Schema, Types } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
 // create our PlantNote schema
 const plantNotesSchema = new Schema({
   noteId: {
-    type: Schema.Types.ObjectId,
-    default: () => new Types.ObjectId(),
+    type: String,
+    default: () => uuidv4(),
   },
   note: {
     type: String,
