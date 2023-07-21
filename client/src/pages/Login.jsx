@@ -1,46 +1,45 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 // import { useHistory } from "react-router-dom";
 import { FormGroup, Stack } from "@mui/material";
 //import { useState } from "react";
 import { useNavigation } from "react-router-dom";
-import { useMutation} from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
-export default function Login(){
-    const[userFormData, setUserFormData] = useState({email: '', password: ''});
-    const [validated] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
-    const handleInputChange = (event) => {
-        const {name, value} = event.target;
-        setUserFormData({
-            ...userFormData,
-            [name]: value,
-        });
+export default function Login() {
+  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
+  const [validated] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setUserFormData({
+      ...userFormData,
+      [name]: value,
+    });
+  };
+  const [loginUser, { error }] = useMutation(LOGIN_USER);
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-    const [loginUser, {error}] = useMutation(LOGIN_USER);
-    const handleFormSubmit = async (event) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        if(form.checkValidity() === false){
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        try{
-            const response = await loginUser({
-                variables: {...userFormData}
-            });
-            const {token, user} = response.data.login;
-            Auth.login(token);
-        } catch(err){
-            
-            setShowAlert(true);
-        }
-        setUserFormData({
-            username: '',
-            email: '',
-            password: '',
-        });
-};
+    try {
+      const response = await loginUser({
+        variables: { ...userFormData },
+      });
+      const { token, user } = response.data.login;
+      Auth.login(token);
+    } catch (err) {
+      setShowAlert(true);
+    }
+    setUserFormData({
+      username: "",
+      email: "",
+      password: "",
+    });
+  };
   return (
     <Stack
       direction="row"
@@ -62,7 +61,6 @@ export default function Login(){
               className="form-control"
               id="email"
               placeholder="email"
-              
               onChange={handleInputChange}
               value={userFormData.email}
               //onBlur={handleEmailBlur}
@@ -82,7 +80,7 @@ export default function Login(){
               placeholder="password"
               value={userFormData.password}
               onChange={handleInputChange}
-            //   onBlur={handlePasswordBlur}
+              //   onBlur={handlePasswordBlur}
             />
             {/* {passwordHasErr && (
               <p className="text-danger">Please enter a valid password.</p>
@@ -95,8 +93,7 @@ export default function Login(){
       </form>
     </Stack>
   );
-
-};
+}
 // import { User } from "../models/User";
 // export default function Login(){
 //    const [username, setUsername] = useState("");
