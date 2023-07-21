@@ -11,6 +11,7 @@ export default function Login(){
     const [validated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const handleInputChange = (event) => {
+        console.log("input change")
         const {name, value} = event.target;
         setUserFormData({
             ...userFormData,
@@ -30,7 +31,7 @@ export default function Login(){
                 variables: {...userFormData}
             });
             console.log(response);
-            const {token} = response.data.login;
+            const {token,} = response.data.login;
             Auth.login(token);
         } catch(err){
             
@@ -61,6 +62,7 @@ export default function Login(){
               type="email"
               className="form-control"
               id="email"
+              name="email"
               placeholder="email"
               onChange={handleInputChange}
               value={userFormData.email}
@@ -78,6 +80,7 @@ export default function Login(){
               type="password"
               className="form-control"
               id="password"
+              name="password"
               placeholder="password"
               value={userFormData.password}
               onChange={handleInputChange}
