@@ -1,4 +1,6 @@
 import * as React from 'react';
+//import React from "react";
+import { useState } from "react";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,6 +27,15 @@ function Copyright(props) {
       {'.'}
     </Typography>
   );
+}
+export default function Signup(){
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordHasErr, setPasswordHasErr] = useState(false);
+    const [emailHasErr, setEmailHasErr] = useState(false);
+    const [username, setUsername] = useState("");
+    const [usernameHasErr, setUsernameHasErr] = useState(false);
+    const [confrimPassword, setConfirmPassword] = useState("");
 }
 // class ParentComponent extends React.Component {
 //   state = {
