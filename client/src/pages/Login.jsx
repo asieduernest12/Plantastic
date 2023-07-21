@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 // import { useHistory } from "react-router-dom";
 import { FormGroup, Stack } from "@mui/material";
 //import { useState } from "react";
 import { useNavigation } from "react-router-dom";
-import { useMutation} from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
 export default function Login(){
@@ -62,7 +62,6 @@ export default function Login(){
               className="form-control"
               id="email"
               placeholder="email"
-              
               onChange={handleInputChange}
               value={userFormData.email}
               //onBlur={handleEmailBlur}
@@ -82,7 +81,7 @@ export default function Login(){
               placeholder="password"
               value={userFormData.password}
               onChange={handleInputChange}
-            //   onBlur={handlePasswordBlur}
+              //   onBlur={handlePasswordBlur}
             />
             {/* {passwordHasErr && (
               <p className="text-danger">Please enter a valid password.</p>
@@ -95,8 +94,7 @@ export default function Login(){
       </form>
     </Stack>
   );
-
-};
+}
 // import { User } from "../models/User";
 // export default function Login(){
 //    const [username, setUsername] = useState("");
