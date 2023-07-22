@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 // npm install @apollo/server express graphql cors body-parser
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
