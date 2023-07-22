@@ -9,6 +9,7 @@ export const LOGIN_USER = gql`
         _id
         username
         email
+<<<<<<< HEAD
       }
     }
   }
@@ -21,6 +22,8 @@ export const USER_DETAILS = gql`
         _id
         username
         email
+=======
+>>>>>>> 71104f45ab875e36bd06f6b2554a575843e10473
         plants {
           _id
           latinName
@@ -52,7 +55,18 @@ export const ADD_PLANT = gql`
     $watering: String!
     $username: String!
   ) {
+<<<<<<< HEAD
     addPlant(latinName: $latinName, commonName: $commonName, img: $img, idealLight: $idealLight, watering: $watering, username: $username) {
+=======
+    addPlant(
+      latinName: $latinName
+      commonName: $commonName
+      img: $img
+      idealLight: $idealLight
+      watering: $watering
+      username: $username
+    ) {
+>>>>>>> 71104f45ab875e36bd06f6b2554a575843e10473
       _id
       latinName
       commonName
@@ -147,12 +161,21 @@ export const UPDATE_PLANT_NOTE = gql`
 
 export const ADD_USER = gql`
   mutation createUser($username: String!, $email: String!, $password: String!) {
+<<<<<<< HEAD
     createUser(username: $username, email: $email, password: $password) {
+=======
+    userdata: createUser(
+      username: $username
+      email: $email
+      password: $password
+    ) {
+>>>>>>> 71104f45ab875e36bd06f6b2554a575843e10473
       token
       user {
         _id
         username
         email
+<<<<<<< HEAD
         plants {
           _id
           latinName
@@ -169,14 +192,31 @@ export const ADD_USER = gql`
             createdAt
           }
         }
+=======
+>>>>>>> 71104f45ab875e36bd06f6b2554a575843e10473
       }
     }
   }
 `;
 
 export const UPDATE_USER = gql`
+<<<<<<< HEAD
   mutation updateUser($id: ID!, $username: String!, $email: String!, $password: String!) {
     updateUser(id: $id, username: $username, email: $email, password: $password) {
+=======
+  mutation updateUser(
+    $id: ID!
+    $username: String!
+    $email: String!
+    $password: String!
+  ) {
+    updateUser(
+      id: $id
+      username: $username
+      email: $email
+      password: $password
+    ) {
+>>>>>>> 71104f45ab875e36bd06f6b2554a575843e10473
       token
       user {
         _id
