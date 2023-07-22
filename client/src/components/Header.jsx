@@ -1,11 +1,10 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Button, ListItem } from "@mui/material";
+import { Badge, Button, ListItem } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import Link from "@mui/material/Link";
 import List from "@mui/material/List";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -15,27 +14,14 @@ import { NavLink } from "react-router-dom";
 // get he house/home icon from material ui
 import {
   House as HouseIcon,
+  Notifications,
+  Outbound,
   Person2Rounded as PersonIcon,
-  TableChart as TableChartIcon,
+  Search
 } from "@mui/icons-material/";
+import useAuthService from "../utils/authHook";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Plantastic
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+
 const drawerWidth = 240;
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -101,12 +87,9 @@ const useNavHandlers = () => {
     }));
   return { openDrawer, closeDrawer, navStates, toggleDrawer };
 };
-function Nav(
-  /** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any}}*/ {
-    open,
-    toggleDrawer,
-  }
-) {
+
+function Nav(/** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any}}*/ { open, toggleDrawer }) {
+  const Auth = useAuthService();
   return (
     <>
       <AppBar position="absolute" open={open}>
@@ -128,19 +111,17 @@ function Nav(
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="inherit"
-            noWrap
-            sx={{ flexGrow: 1 }}
-          >
+          <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
             Plantastic
           </Typography>
           <IconButton color="inherit">
-            {/* <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge> */}
+            <Badge badgeContent={4} color="secondary">
+              <Notifications />
+            </Badge>
+          </IconButton>
+
+          <IconButton color="inherit" disabled={!Auth.isLoggedIn()}>
+            <PersonIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -163,37 +144,34 @@ function Nav(
           {/* {secondaryListItems} */}
           <ListItem>
             <NavLink to="/">
-              <Button
-                variant="text"
-                startIcon={<HouseIcon />}
-                color="success"
-                sx={{ marginLeft: "-10px" }}
-              >
+              <Button variant="text" startIcon={<HouseIcon />} color="success" sx={{ marginLeft: "-10px" }}>
                 {open ? <span>Home</span> : <></>}
               </Button>
             </NavLink>
           </ListItem>
           <ListItem>
-            <NavLink to="/dashboard">
-              <Button
-                variant="text"
-                startIcon={<TableChartIcon />}
-                color="success"
-                sx={{ marginLeft: "-10px" }}
-              >
-                {open ? <span>Dashboard</span> : <></>}
+            <NavLink to="/search">
+              <Button variant="text" startIcon={<Search />} color="success" sx={{ marginLeft: "-10px" }}>
+                {open ? <span>Search</span> : <></>}
               </Button>
             </NavLink>
           </ListItem>
           <ListItem>
             <NavLink to="/signup">
-              <Button
-                variant="text"
-                startIcon={<PersonIcon />}
-                color="success"
-                sx={{ marginLeft: "-10px" }}
-              >
+              <Button variant="text" startIcon={<PersonIcon />} color="success" sx={{ marginLeft: "-10px" }}>
                 {open ? <span>Sign up</span> : <></>}
+              </Button>
+            </NavLink>
+          </ListItem>
+          <ListItem>
+            <NavLink
+              onClick={(e) => {
+                e.preventDefault();
+                Auth.logout();
+              }}
+            >
+              <Button variant="text" startIcon={<Outbound />} color="success" sx={{ marginLeft: "-10px" }}>
+                {open ? <span>Log out</span> : <></>}
               </Button>
             </NavLink>
           </ListItem>

@@ -46,24 +46,26 @@ export default function Search() {
           height: "clamp(300px,60%,600px)",
         }}
       >
-        <FormControl sx={{ width: "100%" }} className="d-outline">
+        <FormControl sx={{ width: "100%" }} className="">
           {loading && (
             <div>
               <i className="fa-solid fa-seedling fa-bounce"></i>Loading...
             </div>
           )}
           {!loading && (
-            <>
+            <Stack direction="column" gap={2}>
               <TextField
                 className="searchTextField"
                 placeholder="Search Plants"
                 onChange={(e) => setSearch(e.target.value)}
                 value={search}
+                required
+                min="1"
               />
-              <Button variant="contained" color="primary" onClick={handleApi}>
+              <Button variant="contained" color="primary" type="click" onClick={handleApi} onKeyDown={(e) => {return e.key === 13? handleApi:{}}}>
                 Click to search
               </Button>
-            </>
+            </Stack>
           )}
         </FormControl>
 

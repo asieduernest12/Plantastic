@@ -6,14 +6,15 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "../../src/App.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../utils/mutations";
-import Auth from "../utils/auth";
+import useAuthService from "../utils/authHook";
+
+import { Typography } from "@mui/material";
 import Copyright from "../components/Copyright";
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -28,7 +29,7 @@ export default function SignUp() {
     validatePassword: "",
   });
   const [disabled, setDisabled] = useState(true);
-
+  const Auth=useAuthService();
   const [createUser, { loading }] = useMutation(ADD_USER, {
     onError: (e) => {
       /* TO DO: add error handling */
@@ -176,4 +177,4 @@ export default function SignUp() {
   );
 }
 
-// const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,10}$/;
+
