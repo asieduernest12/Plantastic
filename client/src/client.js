@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 
 import { setContext } from "@apollo/client/link/context";
 
-const uri = process.env.REACT_APP_GRAPHQL_ENDPOINT ?? "/grapql";
+const uri = process.env.REACT_APP_GRAPHQL_ENDPOINT ?? "http://localhost:4000/graphql";
 
 const httpLink = createHttpLink({
   uri,
