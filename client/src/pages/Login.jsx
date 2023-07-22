@@ -1,100 +1,135 @@
 import React, { useState } from "react";
 // import { useHistory } from "react-router-dom";
-import { FormGroup, Stack } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import LockIcon from "@mui/icons-material/Lock";
 //import { useState } from "react";
-import { useNavigation } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { LOGIN_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
-export default function Login(){
-    const[userFormData, setUserFormData] = useState({email: '', password: ''});
-    const [validated] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
-    const handleInputChange = (event) => {
-        console.log("input change")
-        const {name, value} = event.target;
-        setUserFormData({
-            ...userFormData,
-            [name]: value,
-        });
+import { LOGIN_USER } from "../utils/mutations";
+import { NavLink } from "react-router-dom";
+import { Copyright } from "../components/Copyright";
+export default function Login() {
+  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
+  const [validated] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [loginUser, { error }] = useMutation(LOGIN_USER);
+
+  const handleInputChange = (event) => {
+    console.log("input change");
+    const { name, value } = event.target;
+    setUserFormData({
+      ...userFormData,
+      [name]: value,
+    });
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
     }
-    const [loginUser, {error}] = useMutation(LOGIN_USER);
-    const handleFormSubmit = async (event) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        if(form.checkValidity() === false){
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        try{
-            const response = await loginUser({
-                variables: {...userFormData}
-            });
-            console.log(response);
-            const {token,} = response.data.login;
-            Auth.login(token);
-        } catch(err){
-            
-            setShowAlert(true);
-        }
-        setUserFormData({
-            email: '',
-            password: '',
-        });
-};
+    try {
+      const response = await loginUser({
+        variables: { ...userFormData },
+      });
+      console.log(response);
+      const { token } = response.data.login;
+      Auth.login(token);
+    } catch (err) {
+      setShowAlert(true);
+    }
+    setUserFormData({
+      email: "",
+      password: "",
+    });
+  };
   return (
     <Stack
       direction="row"
       sx={{ height: "100%", width: "100%", placeContent: "center" }}
     >
-      <form
-        className="debug-outline"
+      <Stack
+        component="form"
+        className="login-form"
         onSubmit={handleFormSubmit}
-        style={{ flex: "none", width: "clamp(300px,80%,600px" }}
+        sx={{ width: "100%", direction: "column", placeContent: "center" }}
       >
-        <h1>I am the Login page.</h1>
-        <div>
-          <div>
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
+        <Stack
+          direction="column"
+          justifyContent={"center"}
+          sx={{
+            width: "clamp(300px,80%,400px)",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 2,
+            margin: "auto",
+          }}
+        >
+          {/* login with logo */}
+          <Avatar sx={{ bgcolor: "secondary.main" }}>
+            <LockIcon sx={{ alignSelf: "center" }} />
+          </Avatar>
+
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
+
+          <FormControl sx={{ width: "100%" }}>
+            <TextField
+              label="Email"
               type="email"
               className="form-control"
               id="email"
               name="email"
-              placeholder="email"
               onChange={handleInputChange}
               value={userFormData.email}
+              required
               //onBlur={handleEmailBlur}
             />
             {/* {emailHasErr && (
               <p className="text-danger">Please enter a valid email.</p>
             )} */}
-          </div>
-          <div>
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
+          </FormControl>
+
+          <FormControl sx={{ width: "100%" }}>
+            <TextField
+              label="Password"
               type="password"
               className="form-control"
               id="password"
               name="password"
-              placeholder="password"
               value={userFormData.password}
               onChange={handleInputChange}
+              required
               //   onBlur={handlePasswordBlur}
             />
             {/* {passwordHasErr && (
               <p className="text-danger">Please enter a valid password.</p>
             )} */}
-          </div>
-          <button type="submit" className="btn btn-primary">
+          </FormControl>
+
+          <Button type="submit" variant="contained" sx={{ width: "100%" }}>
             Login
-          </button>
-        </div>
-      </form>
+          </Button>
+
+          <Box sx={{ textAlign: "end", alignSelf: "end" }}>
+            <NavLink to="/signup">Create an account. Sign up</NavLink>
+          </Box>
+
+          <Copyright sx={{ mt: 3 }} />
+        </Stack>
+      </Stack>
     </Stack>
   );
 }
