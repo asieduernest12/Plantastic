@@ -13,29 +13,22 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "../../src/App.css";
 import { NavLink } from "react-router-dom";
-import { useMutation} from '@apollo/client';
+import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../utils/mutations";
 import Auth from "../utils/auth";
-import {useState} from 'react';
+import { useState } from "react";
 import { Copyright } from "../components/Copyright";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 export default function SignUp() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordHasErr, setPasswordHasErr] = useState(false);
-    const [emailHasErr, setEmailHasErr] = useState(false);
-    const [username, setUsername] = useState("");
-    const [usernameHasErr, setUsernameHasErr] = useState(false);
-    const [confrimPassword, setConfirmPassword] = useState("");
-    const [userFormData, setUserFormData] = useState({username: '', email: '', password: ''});
-    const [validated] = useState(false);
-    const [showAlert, setShowAlert] = useState(false);
-    const [addUser, {error}] = useMutation(ADD_USER);
-
-
-
+  const [userFormData, setUserFormData] = useState({ username: "username", email: "", password: "", confirmPassword: "" });
+  const [usernameHasErr, setUsernameHasErr] = useState(false);
+  const [passwordHasErr, setPasswordHasErr] = useState(false);
+  const [emailHasErr, setEmailHasErr] = useState(false);
+  const [validated] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [addUser, { error }] = useMutation(ADD_USER);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,45 +37,75 @@ export default function SignUp() {
       event.preventDefault();
       event.stopPropagation();
     }
-    try{
-        const response = await addUser({
-            variables: {...userFormData}
-        });
-        const {token} = response.data.addUser;
-        Auth.login(token);
-    }
-    catch(err){
-        console.error(err);
-        setShowAlert(true);
+    try {
+      const response = await addUser({
+        variables: { ...userFormData },
+      });
+      const { token } = response.data.addUser;
+      Auth.login(token);
+    } catch (err) {
+      console.error(err);
+      setShowAlert(true);
     }
     setUserFormData({
-    
-    email: "",
-    password: "",
-    username: "",
- 
+      email: "",
+      password: "",
+      username: "",
     });
   };
-  function handleEmailBlur(){
-        const regexEmail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
-        if(!regexEmail.test(email)){
-            setEmailHasErr(true);
-        } else {
-            setEmailHasErr(false);
-        }
-    }
+  function handleEmailBlur() {
+    const regexEmail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
-  function handlePasswordChange(e){
-      setPassword(e.target.value);
-    }
-    function handlePasswordBlur(){
+    const emailInvalid = !regexEmail.test(userFormData.email);
+    console.log({ emailInvalid, email: userFormData.email });
+    setEmailHasErr(emailInvalid);
+  }
+
+  function handlePasswordBlur() {
+    const checks = [
+      {
+        label: "min-length-10",
+        test(text) {
+          return text.length >= 10;
+        },
+      },
+      {
+        label: "has-number",
+        test(text) {
+          return /\d/.test(text);
+        },
+      },
+      {
+        label: "has-upper",
+        test(text) {
+          return /[A-Z]/.test(text);
+        },
+      },
+      {
+        label: "has-lower",
+        test(text) {
+          return /[a-z]/.test(text);
+        },
+      },
+    ];
     const regexPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,10}$/;
-    if(!regexPassword.test(password)){
-      setPasswordHasErr(true);
-    } else {
-      setPasswordHasErr(false);
-    }
-   };
+    // const passwordInvalid = !regexPassword.test(userFormData.password);
+    const passwordInvalidArr = checks.map(({ label, test }) => ({ label, test: test(userFormData.password) }));
+    console.log(passwordInvalidArr);
+
+    const passwordInvalid = passwordInvalidArr.some(({ test }) => !test);
+    console.log({ passwordInvalid, password: userFormData.password });
+    setPasswordHasErr(passwordInvalid);
+  }
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setUserFormData({
+      ...userFormData,
+      [name]: value,
+    });
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -101,48 +124,44 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="username"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="username"
+                  label="Username"
                   autoFocus
+                  onChange={handleChange}
+                  value={userFormData.username}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
+
               <Grid item xs={12}>
-                <TextField  onBlur={handleEmailBlur}
-                {...(emailHasErr && {error:true, helperText:"Please enter a valid email"})}
+                <TextField
+                  onBlur={handleEmailBlur}
+                  {...(emailHasErr && { error: true, helperText: "Please enter a valid email" })}
                   required
                   fullWidth
                   id="email"
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={handleChange}
+                  value={userFormData.email}
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField onBlur={handlePasswordBlur}
-                {...(passwordHasErr && {error:true, helperText:"Password must be 6-10 characters and contain at least one number, one uppercase letter, and one lowercase letter"})}
+                <TextField
+                  onBlur={handlePasswordBlur}
+                  {...(passwordHasErr && {
+                    error: true,
+                    helperText:
+                      "Password must be 6-10 characters and contain at least one number, one uppercase letter, and one lowercase letter",
+                  })}
                   required
                   fullWidth
                   name="password"
@@ -150,6 +169,8 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={handleChange}
+                  value={userFormData.password}
                 />
               </Grid>
               {/* <Grid item xs={12}>
@@ -161,15 +182,15 @@ export default function SignUp() {
                 />
               </Grid> */}
             </Grid>
-            <Button 
-              disabled={!(email && password && !emailHasErr && !passwordHasErr)}
+            <Button
+              disabled={!(userFormData.email && userFormData.password && !emailHasErr && !passwordHasErr)}
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2, bgcolor: "darkgreen" }}
             >
               Sign Up
-            </Button >
+            </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <NavLink to="/login" variant="body2">
@@ -316,7 +337,7 @@ export default function SignUp() {
 //     const { validEmail, email } = this.state;
 
 //     return (
-//       <ChildComponent 
+//       <ChildComponent
 //         email={email}
 //         validEmail={validEmail}
 //         onChange={this.onChange}
