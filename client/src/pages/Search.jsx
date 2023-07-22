@@ -45,10 +45,6 @@ export default function Search() {
           width: "clamp(300px,60%,600px)",
           height: "clamp(300px,60%,600px)",
         }}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleApi();
-        }}
       >
         <FormControl sx={{ width: "100%" }} className="">
           {loading && (
@@ -66,7 +62,7 @@ export default function Search() {
                 required
                 min="1"
               />
-              <Button variant="contained" color="primary" type="submit">
+              <Button variant="contained" color="primary" type="click" onClick={handleApi} onKeyDown={(e) => {return e.key === 13? handleApi:{}}}>
                 Click to search
               </Button>
             </Stack>

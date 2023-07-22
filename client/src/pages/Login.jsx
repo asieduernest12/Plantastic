@@ -16,7 +16,6 @@ export default function Login() {
   const Auth = useAuthService();
 
   const handleInputChange = (event) => {
-    console.log("input change");
     const { name, value } = event.target;
     setUserFormData({
       ...userFormData,
@@ -35,7 +34,6 @@ export default function Login() {
       const response = await loginUser({
         variables: { ...userFormData },
       });
-      console.log(response);
       const { token } = response.data.login;
       Auth.login(token);
     } catch (err) {
