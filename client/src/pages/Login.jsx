@@ -5,7 +5,7 @@ import { Avatar, Box, Button, FormControl, Stack, TextField, Typography } from "
 //import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { NavLink } from "react-router-dom";
-import { Copyright } from "../components/Copyright";
+import Copyright from "../components/Copyright";
 import useAuthService from "../utils/authHook";
 import { LOGIN_USER } from "../utils/mutations";
 export default function Login() {
