@@ -1,27 +1,19 @@
 import React, { useState } from "react";
 // import { useHistory } from "react-router-dom";
-import {
-  Avatar,
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Button, FormControl, FormLabel, Stack, TextField, Typography } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 //import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import Auth from "../utils/auth";
 import { LOGIN_USER } from "../utils/mutations";
 import { NavLink } from "react-router-dom";
 import { Copyright } from "../components/Copyright";
+import useAuthService from "../utils/authHook";
 export default function Login() {
-  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
+  const [userFormData, setUserFormData] = useState({ email: "email@domain.com", password: "Password12345" });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [loginUser, { error }] = useMutation(LOGIN_USER);
+  const Auth = useAuthService();
 
   const handleInputChange = (event) => {
     console.log("input change");
@@ -55,10 +47,7 @@ export default function Login() {
     });
   };
   return (
-    <Stack
-      direction="row"
-      sx={{ height: "100%", width: "100%", placeContent: "center" }}
-    >
+    <Stack direction="row" sx={{ height: "100%", width: "100%", placeContent: "center" }}>
       <Stack
         component="form"
         className="login-form"
