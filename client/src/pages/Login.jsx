@@ -152,7 +152,7 @@ export default function Login() {
 //                 setPasswordHasErr(true);
 //             }
 //         } catch(err){
-//             console.log(err);
+//
 //             throw err;
 //         }
 //     }
