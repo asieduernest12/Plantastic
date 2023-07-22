@@ -29,6 +29,13 @@ const userSchema = new Schema({
       index: true,
     },
   ],
+  plantsWithNotis: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Plant",
+      index: true,
+    },
+  ],
 });
 
 // set up pre-save middleware to create password

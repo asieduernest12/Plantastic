@@ -29,11 +29,6 @@ const plantSchema = new Schema({
     type: String,
     required: true,
   },
-  notification: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
   plantNotes: [plantNotesSchema],
 });
 
