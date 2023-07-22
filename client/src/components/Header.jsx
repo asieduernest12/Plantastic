@@ -18,23 +18,11 @@ import {
   Notifications,
   Outbound,
   Person2Rounded as PersonIcon,
-  Search,
-  TableChart as TableChartIcon,
+  Search
 } from "@mui/icons-material/";
 import useAuthService from "../utils/authHook";
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Plantastic
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+
 const drawerWidth = 240;
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
