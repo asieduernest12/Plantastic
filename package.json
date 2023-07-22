@@ -10,8 +10,6 @@
     "install:client": "npm --prefix client install",
     "install": "npm run install:server && npm run install:client",
     "watch": "concurrently \"npm run watch:client\" \"npm run watch:server\"",
-    "watch:client": "npm --prefix client start",
-    "watch:server": "npm --prefix server start",
     "dev": "npm run watch"
   },
   "keywords": [],
