@@ -350,9 +350,9 @@ const sendEmailToUser = async (email) => {
 
     // Send the email
     const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent:", info.response);
+    console.error("Email sent:", info.response);
   } catch (error) {
-    console.log("Error sending email:", error);
+    console.error("Error sending email:", error);
   }
 };
 
