@@ -14,7 +14,7 @@ export default function Search() {
     const options = {
       method: "GET",
       headers: {
-        "X-RapidAPI-Key": process.env.REACT_APP_APIKEY,
+        "X-RapidAPI-Key": process.env.REACT_APP_RAPIDAPI_HOUSE_PLANT_KEY,
         "X-RapidAPI-Host": "house-plants2.p.rapidapi.com",
       },
     };
@@ -49,25 +49,31 @@ export default function Search() {
           width: "clamp(300px,60%,600px)",
           height: "clamp(300px,60%,600px)",
         }}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleApi();
+        }}
       >
-        <FormControl sx={{ width: "100%" }} className="d-outline">
+        <FormControl sx={{ width: "100%" }} className="">
           {loading && (
             <div>
               <i class="fa-solid fa-seedling fa-bounce"></i>Loading...
             </div>
           )}
           {!loading && (
-            <>
+            <Stack direction="column" gap={2}>
               <TextField
                 className="searchTextField"
                 placeholder="Search Plants"
                 onChange={(e) => setSearch(e.target.value)}
                 value={search}
+                required
+                min="1"
               />
-              <Button variant="contained" color="primary" onClick={handleApi}>
+              <Button variant="contained" color="primary" type="submit">
                 Click to search
               </Button>
-            </>
+            </Stack>
           )}
         </FormControl>
 
@@ -75,13 +81,7 @@ export default function Search() {
 
         <Stack direction={"column"} gap={3} py={3}>
           {data &&
-            data.map((result) => (
-              <SearchResultDetail
-                imgLink={result?.item?.Img}
-                title={result?.item?.["Latin name"]}
-                data={result}
-              />
-            ))}
+            data.map((result) => <SearchResultDetail imgLink={result?.item?.Img} title={result?.item?.["Latin name"]} data={result} />)}
         </Stack>
       </Box>
     </Stack>
