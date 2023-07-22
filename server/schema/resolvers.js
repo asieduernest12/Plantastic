@@ -46,27 +46,28 @@ const resolvers = {
     // Query for a single plantnote
     plantNote: async (parent, { id, noteId }) => {
       try {
-       const plant = await Plant.findById(id);
+        const plant = await Plant.findById(id);
 
         if (!plant) {
           throw new Error("Plant not found");
         }
 
-        const plantNote = plant.plantNotes.find((plantNote) => plantNote.noteId === noteId);
+        const plantNote = plant.plantNotes.find(
+          (plantNote) => plantNote.noteId === noteId
+        );
 
         if (!plantNote) {
           throw new Error("Plant note not found");
         }
 
         return plantNote;
-
       } catch (error) {
         throw new Error("Failed to fetch plantnote");
       }
     },
 
     // Query for all plantnotes
-    plantNotes: async (parent, { id, }) => {
+    plantNotes: async (parent, { id }) => {
       try {
         const plant = await Plant.findById({ id });
 
@@ -123,7 +124,7 @@ const resolvers = {
   Mutation: {
     // Mutation to create a new user
     createUser: async (parent, { username, email, password }) => {
-      console.log({ username, email, password, User });
+      console.error({ username, email, password, User });
       try {
         const user = await User.create({
           username: username,
@@ -135,7 +136,7 @@ const resolvers = {
 
         return { token, user, response };
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to create user");
       }
     },
@@ -155,7 +156,7 @@ const resolvers = {
 
         return { token, user };
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to update user");
       }
     },
@@ -198,7 +199,7 @@ const resolvers = {
 
         return user;
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to change password");
       }
     },
@@ -226,7 +227,7 @@ const resolvers = {
           { new: true }
         ).populate("plants");
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to add plant");
       }
     },
@@ -255,7 +256,7 @@ const resolvers = {
 
         //   return plantNote;
         // } catch (error) {
-        //   console.log(error.message);
+        //   console.error(error.message);
         //   throw new Error("Failed to add plant note");
         // }
         const plant = await Plant.findById(id);
@@ -263,14 +264,14 @@ const resolvers = {
           throw new Error("Plant not found");
         }
 
-        const plantNote = { note, username }
+        const plantNote = { note, username };
         plant.plantNotes.push(plantNote);
 
         const updatedPlant = await plant.save();
 
         return updatedPlant;
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to add plant note");
       }
     },
@@ -304,7 +305,7 @@ const resolvers = {
 
         return plant;
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to delete plant");
       }
     },
@@ -334,7 +335,7 @@ const resolvers = {
 
         return plantNote;
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to delete plant note");
       }
     },
@@ -352,10 +353,10 @@ const resolvers = {
         // Update the plant's image
         plant.img = img;
         await plant.save();
-        console.log(plant);
+        console.error(plant);
         return plant;
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to update plant");
       }
     },
@@ -374,7 +375,7 @@ const resolvers = {
 
         return plantNote;
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to update plant note");
       }
     },
@@ -389,7 +390,7 @@ const resolvers = {
         );
         return plant;
       } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         throw new Error("Failed to set plant notifications");
       }
     },

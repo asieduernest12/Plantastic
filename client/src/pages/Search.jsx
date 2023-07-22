@@ -10,22 +10,18 @@ export default function Search() {
 
   async function handleApi() {
     setLoading(true);
-    const url = `https://house-plants2.p.rapidapi.com/search?query=${search}`;
-    const options = {
-      method: "GET",
-      headers: {
-        "X-RapidAPI-Key": process.env.REACT_APP_APIKEY,
-        "X-RapidAPI-Host": "house-plants2.p.rapidapi.com",
-      },
-    };
-
     try {
-      const response = await fetch(url, options);
-      const result = await response.json();
-      console.log(result);
-      setData(result);
-    } catch (error) {
-      console.error(error);
+      const response = await fetch("/api/fetchplant", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ searchTerm: search }),
+      });
+      const plantData = await response.json();
+      console.log({ plantData });
+      setData(plantData.data);
+    } catch (e) {
     } finally {
       setLoading(false);
     }
@@ -53,7 +49,7 @@ export default function Search() {
         <FormControl sx={{ width: "100%" }} className="d-outline">
           {loading && (
             <div>
-              <i class="fa-solid fa-seedling fa-bounce"></i>Loading...
+              <i className="fa-solid fa-seedling fa-bounce"></i>Loading...
             </div>
           )}
           {!loading && (
@@ -77,9 +73,10 @@ export default function Search() {
           {data &&
             data.map((result) => (
               <SearchResultDetail
+                key={result?.item?.id}
                 imgLink={result?.item?.Img}
                 title={result?.item?.["Latin name"]}
-                data={result}
+                data={result?.item}
               />
             ))}
         </Stack>
