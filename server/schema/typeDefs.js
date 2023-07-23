@@ -45,7 +45,7 @@ const typeDefs = `
     updateUser(id: ID!, username: String, email: String): Auth
     changePassword(id: ID!, currentPassword: String!, newPassword: String!): User!
     login(email: String!, password: String!): Auth
-    addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): User!
+    addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!): Plant!
     updatePlant(id: ID!, img: String!) : Plant!
     deletePlant(id: ID!): User!
     addPlantNoteToPlant(id: ID! note: String!, username: String!): Plant!
