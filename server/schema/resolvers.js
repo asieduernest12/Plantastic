@@ -193,7 +193,7 @@ console.log(user)
           { username: username },
           { $addToSet: { plants: plant._id } },
           { new: true }
-        ).populate("plants");
+        ).populate("plants").populate("plantsWithNotis");
       } catch (error) {
         console.error(error.message);
         throw new Error("Failed to add plant");
@@ -230,11 +230,6 @@ console.log(user)
           throw new Error("Plant not found");
         }
 
-        // delete the associate plant notes
-        for (const noteId of plant.plantNotes) {
-          await Plantnote.findByIdAndDelete(noteId);
-        }
-
         // delete the plant from the database
         await Plant.findByIdAndDelete(id);
 
@@ -243,7 +238,7 @@ console.log(user)
           { username: plant.username },
           { $pull: { plants: { _id: id } } },
           { new: true }
-        ).populate("plants");
+        ).populate("plants").populate("plantsWithNotis");
       } catch (error) {
         console.error(error.message);
         throw new Error("Failed to delete plant");
