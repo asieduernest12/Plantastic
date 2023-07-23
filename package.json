@@ -9,9 +9,9 @@
     "install:server": "npm --prefix server install",
     "install:client": "npm --prefix client install",
     "install": "npm run install:server && npm run install:client",
-    "watch": "concurrently \"npm run watch:client\" \"npm run watch:server\"",
+    "watch": "concurrently \"npm run watch:server\" \"npm run watch:client\"",
     "watch:client": "npm --prefix client  start",
-    "watch:server": "npm --prefix server  start",
+    "watch:server": "npm --prefix server run watch",
     "dev": "npm run watch"
   },
   "keywords": [],
