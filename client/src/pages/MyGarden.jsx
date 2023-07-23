@@ -1,6 +1,7 @@
 import React from "react";
 import useAuthService from "../utils/authHook";
 import { Box, Grid, Stack, Typography } from "@mui/material";
+import { ResponsiveImageContainer } from "../components/ResponsiveImageContainer";
 
 const fakePlants = Array(5)
   .fill(null)
@@ -50,16 +51,6 @@ function MyGarden(props) {
         </Box>
       </Stack>
     </Stack>
-  );
-}
-
-function ResponsiveImageContainer({ image }) {
-  return (
-    <img
-      src={image}
-      alt=""
-      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-    />
   );
 }
 
