@@ -2,7 +2,7 @@ import sendEmailToUser from "../config/emailConfig.js";
 import Plant from "../models/Plant.js";
 import User from "../models/User.js";
 import Plantnote from "../models/Plantnote.js";
-import { signToken } from "../utils/auth.js";
+import { errorOnNoUser, signToken } from "../utils/auth.js";
 
 const resolvers = {
   Query: {
@@ -175,22 +175,25 @@ console.log(user)
     // Mutation to add a plant to a user's plants
     addPlant: async (
       parent,
-      { latinName, commonName, img, idealLight, watering, username }
+      { latinName, commonName, img, idealLight, watering },
+      ctx
     ) => {
+      errorOnNoUser(ctx);
       try {
+        
         const plant = await Plant.create({
           latinName,
           commonName,
           img,
           idealLight,
           watering,
-          username,
+          username: ctx.user.username,
           notification: false,
         });
 
         // Add the plant to the associated user's plants array
         return User.findOneAndUpdate(
-          { username: username },
+          { username: ctx.user.username },
           { $addToSet: { plants: plant._id } },
           { new: true }
         ).populate("plants");
