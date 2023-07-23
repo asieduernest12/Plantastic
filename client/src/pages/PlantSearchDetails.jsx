@@ -16,6 +16,10 @@ function PlantSearchDetails(/** @type {{plant:HousePlant.PlantData}}*/ { plant }
     setNotes([...(notes ?? []), e.target.elements.note.value]);
   };
 
+  if (!plant?.item?.["latin name"]) {
+    return <Typography variant="h1">No plant selected</Typography>;
+  }
+
   return (
     <Stack gap={3}>
       <Box sx={{ height: "300px" }}>

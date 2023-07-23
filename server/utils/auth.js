@@ -22,6 +22,7 @@ export const authMiddleware = function (req, res, next) {
   try {
     const { data } = jwt.verify(token, secret, { maxAge: expiration });
     req.user = data;
+    console.log("user added to req", { user: req.user });
   } catch (/** @type {Error}*/ error) {
     console.error(error);
     throw new AuthenticationError(error.message);
@@ -39,6 +40,7 @@ export const signToken = function ({ username, email, _id }) {
 };
 
 export const errorOnNoUser = function (ctx) {
+  console.log("check ctx", { ctx });
   if (!ctx.user) {
     throw new AuthenticationError("You need to be logged in!");
   }
