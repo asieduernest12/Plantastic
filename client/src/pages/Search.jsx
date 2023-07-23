@@ -1,14 +1,19 @@
 // make a mui search component that is a
+import { SearchRounded } from "@mui/icons-material";
+import { Box, Button, FormControl, Modal, Popover, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Box, Button, FormControl, Stack, TextField } from "@mui/material";
-import SearchResultDetail from "../components/SearchResultDetail";
+import SearchResultItem from "../components/SearchResultItem";
+import PlantSearchDetails from "./PlantSearchDetails";
 
 export default function Search() {
   const [search, setSearch] = useState("");
-  const [data, setData] = useState(null);
+  const [plantsFound, setPlantsFound] = useState(/** @type {HousePlant.PlantData[]|undefined}*/ (null));
   const [loading, setLoading] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
+  const [detailIndex, setDetailIndex] = useState(undefined);
 
-  async function handleApi() {
+  async function handleApi(e) {
+    e.preventDefault();
     setLoading(true);
     try {
       const response = await fetch("/api/fetchplant", {
@@ -20,12 +25,22 @@ export default function Search() {
       });
       const plantData = await response.json();
       console.log({ plantData });
-      setData(plantData.data);
+      setPlantsFound(plantData.data);
     } catch (e) {
     } finally {
       setLoading(false);
     }
   }
+
+  const closeDetails = () => {
+    setOpenDetails(false);
+  };
+
+  const openDetailsAtIndex = (index) => {
+    setDetailIndex(index);
+    setOpenDetails(true);
+  };
+
   return (
     <Stack
       className="Search"
@@ -45,6 +60,7 @@ export default function Search() {
           width: "clamp(300px,60%,600px)",
           height: "clamp(300px,60%,600px)",
         }}
+        onSubmit={handleApi}
       >
         <FormControl sx={{ width: "100%" }} className="">
           {loading && (
@@ -60,9 +76,8 @@ export default function Search() {
                 onChange={(e) => setSearch(e.target.value)}
                 value={search}
                 required
-                min="1"
               />
-              <Button variant="contained" color="primary" type="click" onClick={handleApi} onKeyDown={(e) => {return e.key === 13? handleApi:{}}}>
+              <Button variant="contained" color="primary" type="submit">
                 Click to search
               </Button>
             </Stack>
@@ -72,17 +87,40 @@ export default function Search() {
         {/* show results */}
 
         <Stack direction={"column"} gap={3} py={3}>
-          {data &&
-            data.map((result) => (
-              <SearchResultDetail
-                key={result?.item?.id}
-                imgLink={result?.item?.Img}
-                title={result?.item?.["Latin name"]}
-                data={result?.item}
-              />
-            ))}
+          {plantsFound && (
+            <>
+              <Typography variant="h2">Plants found: {plantsFound.length}</Typography>
+              {plantsFound.map((result, index) => (
+                <SearchResultItem
+                  key={result?.item?.id}
+                  imgLink={result?.item?.Img}
+                  title={result?.item?.["Latin name"]}
+                  data={result?.item}
+                  onClick={() => openDetailsAtIndex(index)}
+                />
+              ))}
+            </>
+          )}
         </Stack>
+
+        {/* prompt user to make a search */}
+        {!plantsFound ? (
+          <Stack direction="row">
+            <SearchRounded />
+            <Typography variant="h3">No searches yet</Typography>
+          </Stack>
+        ) : (
+          <></>
+        )}
       </Box>
+
+      <Popover open={openDetails} onClose={closeDetails}>
+        <Stack direction="row" sx={{ placeItems: "center" }}>
+          <Box width={"clamp(300,60%,800px)"}>
+            {detailIndex && plantsFound[detailIndex] ? <PlantSearchDetails plant={plantsFound[detailIndex]} /> : <></>}
+          </Box>
+        </Stack>
+      </Popover>
     </Stack>
   );
 }

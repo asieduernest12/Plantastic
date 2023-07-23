@@ -1,10 +1,12 @@
+import React from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import useAuthService from "../utils/authHook";
 import { useMutation } from "@apollo/client";
 import { ADD_PLANT } from "../utils/mutations";
 import { useNavigate } from "react-router-dom";
+import { AddRounded } from "@mui/icons-material";
 
-export default function SearchResultDetail({ imgLink, title, data }) {
+export default function SearchResultItem({ imgLink, title, data, onClick }) {
   const Auth = useAuthService();
   const navigate = useNavigate();
   const [createPlant] = useMutation(ADD_PLANT, {
@@ -56,8 +58,11 @@ export default function SearchResultDetail({ imgLink, title, data }) {
 
       <Stack>
         <Typography variant="h2">{title}</Typography>
-        <Button variant="contained" color="primary" onClick={addPlant}>
+        <Button variant="contained" color="primary" onClick={addPlant} endIcon={<AddRounded />}>
           Add Plant
+        </Button>
+        <Button variant={"text"} onClick={onClick}>
+          Details
         </Button>
       </Stack>
     </Box>

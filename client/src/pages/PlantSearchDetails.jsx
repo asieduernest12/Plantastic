@@ -1,42 +1,50 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  Stack,
-  TextareaAutosize,
-  Typography,
-} from "@mui/material";
-import React from "react";
-import { ResponsiveImageContainer } from "../components/ResponsiveImageContainer";
 import { Delete } from "@mui/icons-material";
+import { Box, Button, FormControl, IconButton, Stack, TextareaAutosize, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { ResponsiveImageContainer } from "../components/ResponsiveImageContainer";
 
 /**
  *
  * @param {*} props
  * @returns
  */
-function PlantSearchDetails({ plant }) {
+function PlantSearchDetails(/** @type {{plant:HousePlant.PlantData}}*/ { plant }) {
+  const [notes, setNotes] = useState(undefined);
+
+  const handleAddNote = (e) => {
+    e.preventDefault();
+    setNotes([...(notes ?? []), e.target.elements.note.value]);
+  };
+
   return (
-    <Stack>
-      <Typography variant="h1">{plant.name}</Typography>
+    <Stack gap={3}>
       <Box sx={{ height: "300px" }}>
-        <ResponsiveImageContainer image={plant.image} />
+        <ResponsiveImageContainer image={plant.item.Img} />
       </Box>
+      <Typography variant="h1" component="h5">
+        {plant.item["Latin name"] ?? "No name"}
+      </Typography>
 
       {/* text information */}
-      <TextareaAutosize placeholder="Add personal note"></TextareaAutosize>
 
-      <Button variant="contained">Add Note</Button>
+      <Box component="form" onSubmit={handleAddNote}>
+        <FormControl>
+          <TextareaAutosize placeholder="Add personal note" name="note"></TextareaAutosize>
+        </FormControl>
+        <Button variant="contained" type="submit">
+          Add Note
+        </Button>
+      </Box>
 
       {/* list of personal notes, will be store if save button is clicked */}
       <Stack direction="column">
-        {plant.notes.map((note) => (
-          <Box key={note._id}>
-            <Typography>{note.text}</Typography>
+        {notes?.map((note) => (
+          <Stack key={note} direction="row">
+            <Typography sx={{ display: "grid", placeItems: "center" }}>{note}</Typography>
             <IconButton>
               <Delete />
             </IconButton>
-          </Box>
+          </Stack>
         ))}
       </Stack>
     </Stack>
