@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 // import { useHistory } from "react-router-dom";
 import LockIcon from "@mui/icons-material/Lock";
-import { Avatar, Box, Button, FormControl, Stack, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  FormControl,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 //import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { NavLink } from "react-router-dom";
@@ -9,12 +17,14 @@ import Copyright from "../components/Copyright";
 import useAuthService from "../utils/authHook";
 import { LOGIN_USER } from "../utils/mutations";
 export default function Login() {
-  const [userFormData, setUserFormData] = useState({ email: "email@domain.com", password: "Password12345" });
+  const [userFormData, setUserFormData] = useState({
+    email: "email@domain.com",
+    password: "Password12345",
+  });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [loginUser, { error }] = useMutation(LOGIN_USER);
   const Auth = useAuthService();
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({
@@ -22,7 +32,6 @@ export default function Login() {
       [name]: value,
     });
   };
-
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -45,7 +54,10 @@ export default function Login() {
     });
   };
   return (
-    <Stack direction="row" sx={{ height: "100%", width: "100%", placeContent: "center" }}>
+    <Stack
+      direction="row"
+      sx={{ height: "100%", width: "100%", placeContent: "center" }}
+    >
       <Stack
         component="form"
         className="login-form"
@@ -67,11 +79,9 @@ export default function Login() {
           <Avatar sx={{ bgcolor: "secondary.main" }}>
             <LockIcon sx={{ alignSelf: "center" }} />
           </Avatar>
-
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-
           <FormControl sx={{ width: "100%" }}>
             <TextField
               label="Email"
@@ -88,7 +98,6 @@ export default function Login() {
               <p className="text-danger">Please enter a valid email.</p>
             )} */}
           </FormControl>
-
           <FormControl sx={{ width: "100%" }}>
             <TextField
               label="Password"
@@ -105,15 +114,12 @@ export default function Login() {
               <p className="text-danger">Please enter a valid password.</p>
             )} */}
           </FormControl>
-
           <Button type="submit" variant="contained" sx={{ width: "100%" }}>
             Login
           </Button>
-
           <Box sx={{ textAlign: "end", alignSelf: "end" }}>
             <NavLink to="/signup">Create an account. Sign up</NavLink>
           </Box>
-
           <Copyright sx={{ mt: 3 }} />
         </Stack>
       </Stack>
