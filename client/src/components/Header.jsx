@@ -14,14 +14,17 @@ import { NavLink } from "react-router-dom";
 // get he house/home icon from material ui
 import {
   House as HouseIcon,
+  LoginOutlined,
   Notifications,
   Outbound,
+  Person2,
+  Person3Outlined,
+  PersonAddAlt1,
   Person2Rounded as PersonIcon,
-  Search
+  Search,
+  SignpostOutlined
 } from "@mui/icons-material/";
 import useAuthService from "../utils/authHook";
-
-
 const drawerWidth = 240;
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -87,7 +90,6 @@ const useNavHandlers = () => {
     }));
   return { openDrawer, closeDrawer, navStates, toggleDrawer };
 };
-
 function Nav(/** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any}}*/ { open, toggleDrawer }) {
   const Auth = useAuthService();
   return (
@@ -119,7 +121,6 @@ function Nav(/** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any
               <Notifications />
             </Badge>
           </IconButton>
-
           <IconButton color="inherit" disabled={!Auth.isLoggedIn()}>
             <PersonIcon />
           </IconButton>
@@ -157,8 +158,15 @@ function Nav(/** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any
             </NavLink>
           </ListItem>
           <ListItem>
+            <NavLink to="/Login">
+              <Button variant="text" startIcon={<LoginOutlined />} color="success" sx={{ marginLeft: "-10px" }}>
+                {open ? <span>Login</span> : <></>}
+              </Button>
+            </NavLink>
+          </ListItem>
+          <ListItem>
             <NavLink to="/signup">
-              <Button variant="text" startIcon={<PersonIcon />} color="success" sx={{ marginLeft: "-10px" }}>
+              <Button variant="text" startIcon={<PersonAddAlt1 />} color="success" sx={{ marginLeft: "-10px" }}>
                 {open ? <span>Sign up</span> : <></>}
               </Button>
             </NavLink>
