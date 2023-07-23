@@ -9,6 +9,19 @@ export const LOGIN_USER = gql`
         _id
         username
         email
+      }
+    }
+  }
+`;
+// login(email: String!, password: String!): Auth!
+export const USER_DETAILS = gql`
+  mutation loginUser($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+      user {
+        _id
+        username
+        email
         plants {
           _id
           latinName

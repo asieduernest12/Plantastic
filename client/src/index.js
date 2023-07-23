@@ -5,12 +5,15 @@ import App from "./App";
 import { ApolloProvider } from "@apollo/client";
 import client from "./client.js";
 import { BrowserRouter } from "react-router-dom";
+import { AppContextProvider } from "./utils/appContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ApolloProvider client={client}>
-        <App />
+        <AppContextProvider>
+          <App />
+        </AppContextProvider>
       </ApolloProvider>
     </BrowserRouter>
   </React.StrictMode>

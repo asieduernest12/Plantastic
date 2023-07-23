@@ -4,6 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 // create a new class to instantiate for a user
 export default function useAuthService() {
+  const user = {
+    id: new Date(),
+    username: "username",
+    email: "email@domain.com",
+  };
   const navigate = useNavigate();
   // get user data
   const getProfile = (token) => {
@@ -61,5 +66,6 @@ export default function useAuthService() {
     login,
     logout,
     isLoggedIn,
+    user,
   };
 }
