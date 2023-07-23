@@ -40,7 +40,7 @@ export const ADD_PLANT = gql`
     $watering: String!
     $username: String!
   ) {
-    addPlant(
+    plantData: addPlant(
       latinName: $latinName
       commonName: $commonName
       img: $img
@@ -48,19 +48,10 @@ export const ADD_PLANT = gql`
       watering: $watering
       username: $username
     ) {
-      _id
-      latinName
-      commonName
-      img
-      idealLight
-      watering
       username
-      notification
-      plantNotes {
-        _id
-        note
-        username
-        createdAt
+      email
+      plants {
+        commonName
       }
     }
   }

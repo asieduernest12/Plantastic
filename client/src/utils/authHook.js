@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 export default function useAuthService() {
   const navigate = useNavigate();
   // get user data
-  const getProfile = () => {
-    return decode(this.getToken());
+  const getProfile = (token) => {
+    return decode(token);
   };
 
   // check if user's logged in
@@ -53,5 +53,13 @@ export default function useAuthService() {
     return token && !isTokenExpired(token);
   };
 
-  return { getProfile, loggedIn, isTokenExpired, getToken, login, logout, isLoggedIn };
+  return {
+    getProfile,
+    loggedIn,
+    isTokenExpired,
+    getToken,
+    login,
+    logout,
+    isLoggedIn,
+  };
 }
