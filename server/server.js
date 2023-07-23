@@ -11,6 +11,8 @@ import connection from "./config/connection.js";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import { authMiddleware } from "./utils/auth.js";
+import bodyParser from "body-parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,6 +24,11 @@ const httpServer = http.createServer(app);
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// add bodyParser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 
 const server = new ApolloServer({
   typeDefs,
@@ -39,9 +46,12 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(
   "/graphql",
-  expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }),
-  })
+  authMiddleware, //check and set the user onto context if the token is present and valid
+  expressMiddleware(server, 
+  //   {
+  //   context: async ({ req }) => ({ token: req.headers.token }),
+  // }
+  )
 );
 
 app.post("/api/fetchplant", async (req, res) => {
@@ -64,7 +74,5 @@ app.post("/api/fetchplant", async (req, res) => {
   }
 });
 await connection;
-await new Promise((resolve) =>
-  httpServer.listen({ port: process.env.PORT || 4000 }, resolve)
-);
+await new Promise((resolve) => httpServer.listen({ port: process.env.PORT || 4000 }, resolve));
 console.log(`🚀 Server ready at http://localhost:4000/graphql`);
