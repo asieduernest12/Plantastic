@@ -63,6 +63,10 @@ export default function SignUp() {
       isValidEmail(signUpForm.email);
     /* sets state value to disable button */
     setDisabled(!valid);
+    console.log( valid );
+    console.log(signUpForm);
+    console.log(isValidPassword(signUpForm.password))
+    console.log(isValidEmail(signUpForm.email))
   }, [signUpForm]);
 
   function handleChange(event) {
