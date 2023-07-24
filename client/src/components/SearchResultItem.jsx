@@ -11,6 +11,7 @@ export default function SearchResultItem({ imgLink, title, data }) {
   const Auth = useAuthService();
   const navigate = useNavigate();
   const [createPlant] = useMutation(ADD_PLANT, {
+    refetchQueries:[{query: QUERY_PLANTS}],
     onError: (e) => {
       /* TO DO: add error handling */
       console.error(e.message);
