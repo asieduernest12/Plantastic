@@ -3,6 +3,7 @@ import { SearchRounded } from "@mui/icons-material";
 import { Box, Button, FormControl, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import SearchResultItem from "../components/SearchResultItem";
+import CenteredCircularProgress from "../components/CenteredCircularProgress";
 
 export default function Search() {
   const [search, setSearch] = useState("");
@@ -72,10 +73,12 @@ export default function Search() {
           )}
         </FormControl>
 
+        {loading ? <CenteredCircularProgress /> : <></>}
+
         {/* show results */}
 
         <Stack direction={"column"} gap={3} py={3}>
-          {plantsFound && (
+          {plantsFound && !loading && (
             <>
               <Typography variant="h2">Plants found: {plantsFound.length}</Typography>
               {plantsFound.map((result, index) => (

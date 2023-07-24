@@ -18,7 +18,7 @@ export default function SearchResultItem({ imgLink, title, data }) {
     onCompleted: ({ plantData }) => {
       console.log({ plantData });
 
-      alert("Plant added")
+      alert("Plant added");
       // navigate("/plan");
     },
   });

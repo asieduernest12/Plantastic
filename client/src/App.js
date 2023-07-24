@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import PlantDetails from "./pages/PlantDetails";
 function App() {
   return (
-    <Box className="App debug-outline" display={"flex"} sx={{ height: "100vh", width: "100wh" }}>
+    <Box className="App scrollable" display={"flex"} sx={{ height: "100vh", width: "100wh" }}>
       <Header />
       <Box sx={{ marginTop: "60px", width: "100%" }}>
         <Routes>
