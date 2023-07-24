@@ -5,6 +5,7 @@ import { useMutation } from "@apollo/client";
 import { ADD_PLANT } from "../utils/mutations";
 import { useNavigate } from "react-router-dom";
 import { AddRounded } from "@mui/icons-material";
+import { QUERY_PLANTS } from "../utils/queries";
 
 export default function SearchResultItem({ imgLink, title, data }) {
   const Auth = useAuthService();
@@ -35,7 +36,7 @@ export default function SearchResultItem({ imgLink, title, data }) {
       username: userData?.data?.username,
     };
     console.log(plantObj);
-    createPlant({ variables: { ...plantObj } });
+    createPlant({ variables: { ...plantObj }, refreshQueries: [QUERY_PLANTS] });
   }
 
   return (

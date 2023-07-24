@@ -39,7 +39,10 @@ function PlantDetails() {
   const handleAddNote = (e) => {
     e.preventDefault();
     setNotes([...(notes ?? []), e.target.elements.note.value]);
-    addNoteMutation({ variables: { id: params.id, note: e.target.elements.note.value } })
+    addNoteMutation({
+      variables: { id: params.id, note: e.target.elements.note.value },
+      refetchQueries: [{ query: QUERY_PLANT, variables: { id: params.id } }],
+    })
       .then(() => loadPlants())
       .finally(() => e.target.reset());
   };
@@ -53,7 +56,9 @@ function PlantDetails() {
 
   const deletePlantNote = (id, noteId) => {
     console.log("delete plant note", noteId);
-    deletePlantNoteMutation({ variables: { id, noteId } }).then(() => loadPlants());
+    deletePlantNoteMutation({ variables: { id, noteId }, refetchQueries: [{ query: QUERY_PLANT, variables: { id: params.id } }] }).then(
+      () => loadPlants()
+    );
   };
 
   useEffect(() => {
@@ -124,8 +129,8 @@ function PlantDetails() {
           {plant?.plantNotes?.map((noteObj) => (
             <Stack key={noteObj.noteId} direction="row">
               <Typography sx={{ display: "grid", placeItems: "center" }}>{noteObj.note}</Typography>
-              <IconButton>
-                <Delete onClick={(e) => deletePlantNote(plant._id, noteObj.noteId)} />
+              <IconButton onClick={(e) => deletePlantNote(plant._id, noteObj.noteId)}>
+                <Delete />
               </IconButton>
             </Stack>
           ))}
