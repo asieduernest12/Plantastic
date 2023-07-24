@@ -56,9 +56,9 @@ export const DELETE_PLANT = gql`
 `;
 
 export const ADD_PLANT_NOTE = gql`
-  mutation addPlantNote($note: String!, $username: String!) {
-    addPlantNote(note: $note, username: $username) {
-      _id
+  mutation addPlantNote($note: String!, $id: ID!) {
+    addPlantNoteToPlant(note: $note, id: $id) {
+      noteId
       note
       username
       createdAt
@@ -67,12 +67,9 @@ export const ADD_PLANT_NOTE = gql`
 `;
 
 export const DELETE_PLANT_NOTE = gql`
-  mutation deletePlantNote($id: ID!) {
-    deletePlantNote(id: $id) {
+  mutation deletePlantNote($id: ID!, $noteId: String!) {
+    deletePlantNote(id: $id, noteId: $noteId) {
       _id
-      note
-      username
-      createdAt
     }
   }
 `;

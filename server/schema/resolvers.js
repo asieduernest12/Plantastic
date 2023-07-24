@@ -206,8 +206,10 @@ console.log(user)
     },
 
     // Mutation to add a plant note to a user's plant
-    addPlantNoteToPlant: async (parent, { id, note, username }) => {
+    addPlantNoteToPlant: async (parent, { id, note,  },ctx) => {
+      errorOnNoUser(ctx);
       try {
+        const username = ctx.user.username
         // Find the associated plant
         const plant = await Plant.findById(id);
         if (!plant) {
@@ -219,7 +221,7 @@ console.log(user)
 
         const updatedPlant = await plant.save();
 
-        return updatedPlant;
+        return updatedPlant.plantNotes[updatedPlant.plantNotes.length - 1];
       } catch (error) {
         console.error(error.message);
         throw new Error("Failed to add plant note");
@@ -255,6 +257,7 @@ console.log(user)
     deletePlantNote: async (parent, { id, noteId }) => {
       try {
         // Find the associated Plant and pull the note from the plantNotes array
+        
         const plant = await Plant.findByIdAndUpdate(
           id, 
           { $pull: { plantNotes: { noteId: noteId } } },
@@ -264,7 +267,7 @@ console.log(user)
           throw new Error("Plant not found");
         }
 
-        // Return the updated plant
+        // Return the deleted plant
         return plant;
 
       } catch (error) {

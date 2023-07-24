@@ -48,9 +48,9 @@ const typeDefs = `
     addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!): Plant!
     updatePlant(id: ID!, img: String!) : Plant!
     deletePlant(id: ID!): User!
-    addPlantNoteToPlant(id: ID! note: String!, username: String!): Plant!
+    addPlantNoteToPlant(id: ID! note: String!): Plantnote!
     deletePlantNote(id: ID! noteId: String!): Plant!
-    updatePlantNote(id: ID!, noteId: String!, note: String!,): Plant!
+    updatePlantNote(id: ID!, noteId: String!, note: String!): Plant!
     setPlantNotifications(id: ID!, username: String!): User!
     setPlantNotificationsFalse(id: ID!, username: String!): User!
   }

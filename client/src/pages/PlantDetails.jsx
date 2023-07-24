@@ -1,11 +1,12 @@
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { Delete } from "@mui/icons-material";
 import { Box, Button, CircularProgress, FormControl, IconButton, Paper, Stack, TextareaAutosize, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ResponsiveImageContainer } from "../components/ResponsiveImageContainer";
 import { QUERY_PLANT } from "../utils/queries";
 import CenteredCircularProgress from "../components/CenteredCircularProgress";
+import { ADD_PLANT_NOTE, DELETE_PLANT_NOTE } from "../utils/mutations";
 
 /**
  *
@@ -15,6 +16,22 @@ import CenteredCircularProgress from "../components/CenteredCircularProgress";
 function PlantDetails() {
   const params = useParams();
   const [query, { error, loading }] = useLazyQuery(QUERY_PLANT);
+  const [addNoteMutation] = useMutation(ADD_PLANT_NOTE, {
+    onError: (e) => {
+      /* TO DO: add error handling */
+      console.error(e.message);
+      alert("Error adding note: " + e.message);
+    },
+  });
+
+  const [deletePlantNoteMutation] = useMutation(DELETE_PLANT_NOTE, {
+    onError: (e) => {
+      /* TO DO: add error handling */
+      console.error(e.message);
+      alert("Error deleting note: " + e.message);
+    },
+  });
+
   const [plant, setPlant] = useState(undefined);
 
   const [notes, setNotes] = useState(undefined);
@@ -22,7 +39,21 @@ function PlantDetails() {
   const handleAddNote = (e) => {
     e.preventDefault();
     setNotes([...(notes ?? []), e.target.elements.note.value]);
-    e.target.reset();
+    addNoteMutation({ variables: { id: params.id, note: e.target.elements.note.value } })
+      .then(() => loadPlants())
+      .finally(() => e.target.reset());
+  };
+
+  const loadPlants = useCallback(async () => {
+    query({ variables: { id: params.id } }).then((res) => {
+      console.log("plant updated:", res.data.plant);
+      setPlant(res.data.plant);
+    });
+  }, [query, params]);
+
+  const deletePlantNote = (id, noteId) => {
+    console.log("delete plant note", noteId);
+    deletePlantNoteMutation({ variables: { id, noteId } }).then(() => loadPlants());
   };
 
   useEffect(() => {
@@ -30,8 +61,8 @@ function PlantDetails() {
       return;
     }
 
-    query({ variables: { id: params.id } }).then((res) => setPlant(res.data.plant));
-  }, [params, query]);
+    loadPlants();
+  }, [params, loadPlants]);
 
   if (loading) {
     return <CenteredCircularProgress />;
@@ -90,11 +121,11 @@ function PlantDetails() {
 
         {/* list of personal notes, will be store if save button is clicked */}
         <Stack direction="column" p={2} gap={2}>
-          {notes?.map((note) => (
-            <Stack key={note} direction="row">
-              <Typography sx={{ display: "grid", placeItems: "center" }}>{note}</Typography>
+          {plant?.plantNotes?.map((noteObj) => (
+            <Stack key={noteObj.noteId} direction="row">
+              <Typography sx={{ display: "grid", placeItems: "center" }}>{noteObj.note}</Typography>
               <IconButton>
-                <Delete />
+                <Delete onClick={(e) => deletePlantNote(plant._id, noteObj.noteId)} />
               </IconButton>
             </Stack>
           ))}
