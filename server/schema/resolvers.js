@@ -192,11 +192,13 @@ console.log(user)
         });
 
         // Add the plant to the associated user's plants array
-        return User.findOneAndUpdate(
+         User.findOneAndUpdate(
           { username: ctx.user.username },
           { $addToSet: { plants: plant._id } },
           { new: true }
         ).populate("plants").populate("plantsWithNotis");
+
+        return plant
       } catch (error) {
         console.error(error.message);
         throw new Error("Failed to add plant");

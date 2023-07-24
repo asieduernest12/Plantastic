@@ -29,7 +29,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -46,12 +45,9 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(
   "/graphql",
-  authMiddleware, //check and set the user onto context if the token is present and valid
-  expressMiddleware(server, 
-  //   {
-  //   context: async ({ req }) => ({ token: req.headers.token }),
-  // }
-  )
+  expressMiddleware(server, {
+    context: authMiddleware,
+  })
 );
 
 app.post("/api/fetchplant", async (req, res) => {

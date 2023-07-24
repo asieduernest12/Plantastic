@@ -1,10 +1,16 @@
 import { AuthenticationError } from "apollo-server-express";
 import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 const secret = "mysecretsshhhhh";
 const expiration = "2h";
 
-export const authMiddleware = function (req, res, next) {
+/**
+ *
+ * @description add the user to the request object if a token is found else the request object is returned
+ * @returns
+ */
+export const authMiddleware = async function ({ req }) {
   // allows token to be sent via req.body, req.query, or headers
   let token = req?.body?.token || req?.query.token || req?.headers?.authorization;
   // console.log(req)
@@ -14,23 +20,19 @@ export const authMiddleware = function (req, res, next) {
   }
 
   if (!token) {
-    return next();
-    // return req;
+    return req;
   }
 
   console.log({ token });
   try {
     const { data } = jwt.verify(token, secret, { maxAge: expiration });
-    req.user = data;
-    console.log("user added to req", { user: req.user });
+    const user = await User.findById(data._id);
+    req.user = user;
   } catch (/** @type {Error}*/ error) {
     console.error(error);
-    throw new AuthenticationError(error.message);
-  } finally {
-    next();
   }
 
-  // return req;
+  return req;
 };
 
 export const signToken = function ({ username, email, _id }) {
@@ -40,7 +42,7 @@ export const signToken = function ({ username, email, _id }) {
 };
 
 export const errorOnNoUser = function (ctx) {
-  console.log("check ctx", { ctx });
+  console.log("check ctx", { user: ctx?.user });
   if (!ctx.user) {
     throw new AuthenticationError("You need to be logged in!");
   }
