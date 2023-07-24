@@ -6,6 +6,7 @@ import PlantDetails from "./PlantDetails";
 import { useQuery } from "@apollo/client";
 import { QUERY_PLANTS } from "../utils/queries";
 import { NavLink } from "react-router-dom";
+import CenteredCircularProgress from "../components/CenteredCircularProgress";
 
 const fakePlants = Array(5)
   .fill(null)
@@ -23,20 +24,9 @@ const fakePlants = Array(5)
 function MyGarden(props) {
   const auth = useAuthService();
   const { data, error, loading } = useQuery(QUERY_PLANTS);
-  const [openDetails, setOpenDetails] = useState(false);
-  const [detailIndex, setDetailIndex] = useState(undefined);
-
-  const closeDetails = () => {
-    setOpenDetails(false);
-  };
-
-  const openDetailsAtIndex = (index) => {
-    setDetailIndex(index);
-    setOpenDetails(true);
-  };
 
   if (loading) {
-    return <Typography variant="h1">Loading...</Typography>;
+    return <CenteredCircularProgress />;
   }
 
   const [firstPlant, ...restOfPlants] = data?.plants;
@@ -72,12 +62,6 @@ function MyGarden(props) {
             </NavLink>
           ))}
         </Box>
-
-        {/* <Popover open={openDetails} onClose={closeDetails}>
-          <Stack direction="row" sx={{ placeItems: "center" }}>
-            <Box width={"clamp(300,60%,800px)"}>{firstPlant ? <PlantSearchDetails plant={firstPlant} /> : <></>}</Box>
-          </Stack>
-        </Popover> */}
       </Stack>
     </Stack>
   );

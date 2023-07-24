@@ -1,3 +1,7 @@
+// this type definition file is used to define the types of the data that is returned from the API for the houseplant data
+// do not remove this or you will be google searching for the types of the data for a long time
+// intead keep this and vscode will help you with the types of the data through the intellisense
+
 declare module HousePlant {
   interface PlantItem {
     Categories: string;
