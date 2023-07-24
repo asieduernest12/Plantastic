@@ -56,6 +56,7 @@ export const QUERY_USER = gql`
       username
       _id
       plants {
+        _id
         latinName
         commonName
         img
@@ -82,20 +83,16 @@ export const QUERY_PLANTS = gql`
 `;
 
 export const QUERY_PLANT = gql`
-  query plant($id: ID!) {
-    plant(id: $id) {
-      _id
-      latinName
+  query Plant($plantId: ID!) {
+    plant(id: $plantId) {
       commonName
-      img
+      latinName
       idealLight
+      img
       watering
-      username
-      notification
       plantNotes {
-        _id
         note
-        username
+        noteId
         createdAt
       }
     }

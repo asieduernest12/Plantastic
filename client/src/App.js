@@ -8,6 +8,8 @@ import "./App.css";
 import { Box } from "@mui/material";
 import Login from "./pages/Login";
 import MyGarden from "./pages/MyGarden";
+import PlantDetails from "./pages/PlantDetails";
+
 function App() {
   return (
     <Box
@@ -23,6 +25,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<Search />} />
           <Route path="/mygarden" element={<MyGarden />} />
+          <Route path="/plantdetails/:plantId" element={<PlantDetails />} />
           <Route path="*" element={<>You are so lost now. Go home</>} />
         </Routes>
       </Box>

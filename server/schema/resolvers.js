@@ -39,6 +39,7 @@ const resolvers = {
     },
     // Query for a single plant
     plant: async (parent, { id }) => {
+      console.log(id);
       try {
         const plant = await Plant.findById(id);
         return plant;
