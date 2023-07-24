@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import useAuthService from "../utils/authHook";
-import { Box, Grid, Popover, Stack, Typography } from "@mui/material";
+import { Box, Grid, IconButton, Popover, Stack, Typography } from "@mui/material";
 import { ResponsiveImageContainer } from "../components/ResponsiveImageContainer";
 import PlantDetails from "./PlantDetails";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { QUERY_PLANTS } from "../utils/queries";
 import { NavLink } from "react-router-dom";
 import CenteredCircularProgress from "../components/CenteredCircularProgress";
+import { DeleteOutlineRounded, DeleteRounded } from "@mui/icons-material";
+import { DELETE_PLANT } from "../utils/mutations";
 
 const fakePlants = Array(5)
   .fill(null)
@@ -24,12 +26,26 @@ const fakePlants = Array(5)
 function MyGarden(props) {
   const auth = useAuthService();
   const { data, error, loading } = useQuery(QUERY_PLANTS);
+  const [deleteMutation] = useMutation(DELETE_PLANT, {
+    refetchQueries: [{ query: QUERY_PLANTS }],
+    onError: (e) => {
+      /* TO DO: add error handling */
+      console.error(e.message);
+      alert("Error deleting plant: " + e.message);
+    },
+  });
 
   if (loading) {
     return <CenteredCircularProgress />;
   }
 
   const [firstPlant, ...restOfPlants] = data?.plants;
+
+  const deletePlant = (plant, e) => {
+    e.preventDefault();
+    console.log("delete plant", plant);
+    deleteMutation({ variables: { id: plant._id } }).then();
+  };
 
   return (
     <Stack className="MyGarden" sx={{ direction: "row", placeItems: "center" }}>
@@ -53,6 +69,12 @@ function MyGarden(props) {
             <NavLink to={`/plants/${firstPlant._id}`}>
               <ResponsiveImageContainer image={firstPlant.img} />
               <FloatViewDetails />
+              <IconButton
+                sx={{ position: "absolute", right: 2, top: 2, color: "white", backgroundColor: "grey" }}
+                onClick={(e) => deletePlant(firstPlant, e)}
+              >
+                <DeleteRounded />
+              </IconButton>
             </NavLink>
           </Box>
 
@@ -62,6 +84,12 @@ function MyGarden(props) {
               <NavLink to={`/plants/${plant._id}`} key={plant._id}>
                 <ResponsiveImageContainer key={plant._id} image={plant.img} />
                 <FloatViewDetails />
+                <IconButton
+                  sx={{ position: "absolute", right: 2, top: 2, color: "white", backgroundColor: "grey" }}
+                  onClick={(e) => deletePlant(plant, e)}
+                >
+                  <DeleteRounded />
+                </IconButton>
               </NavLink>
             </Box>
           ))}

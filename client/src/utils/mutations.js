@@ -17,22 +17,8 @@ export const LOGIN_USER = gql`
 //  addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): Plant!
 
 export const ADD_PLANT = gql`
-  mutation addPlant(
-    $latinName: String!
-    $commonName: String!
-    $img: String!
-    $idealLight: String!
-    $watering: String!
-    
-  ) {
-    plantData: addPlant(
-      latinName: $latinName
-      commonName: $commonName
-      img: $img
-      idealLight: $idealLight
-      watering: $watering
-      
-    ) {
+  mutation addPlant($latinName: String!, $commonName: String!, $img: String!, $idealLight: String!, $watering: String!) {
+    plantData: addPlant(latinName: $latinName, commonName: $commonName, img: $img, idealLight: $idealLight, watering: $watering) {
       _id
       latinName
       username
@@ -65,19 +51,6 @@ export const DELETE_PLANT = gql`
   mutation deletePlant($id: ID!) {
     deletePlant(id: $id) {
       _id
-      latinName
-      commonName
-      img
-      idealLight
-      watering
-      username
-      notification
-      plantNotes {
-        _id
-        note
-        username
-        createdAt
-      }
     }
   }
 `;
@@ -116,11 +89,7 @@ export const UPDATE_PLANT_NOTE = gql`
 
 export const ADD_USER = gql`
   mutation createUser($username: String!, $email: String!, $password: String!) {
-    userdata: createUser(
-      username: $username
-      email: $email
-      password: $password
-    ) {
+    userdata: createUser(username: $username, email: $email, password: $password) {
       token
       user {
         _id
@@ -132,18 +101,8 @@ export const ADD_USER = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation updateUser(
-    $id: ID!
-    $username: String!
-    $email: String!
-    $password: String!
-  ) {
-    updateUser(
-      id: $id
-      username: $username
-      email: $email
-      password: $password
-    ) {
+  mutation updateUser($id: ID!, $username: String!, $email: String!, $password: String!) {
+    updateUser(id: $id, username: $username, email: $email, password: $password) {
       token
       user {
         _id
