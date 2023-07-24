@@ -20,16 +20,15 @@ export default function SearchResultDetail({ imgLink, title, data }) {
 
   async function addPlant() {
     const token = Auth.getToken();
-    const userData = Auth.getProfile(token);
+    const userData = await Auth.getProfile(token);
     const plantObj = {
       latinName: title,
       commonName: data?.["Common name"]?.[0] ?? "N/A",
       img: imgLink,
       idealLight: data?.["Light ideal"],
       watering: data?.Watering,
-      username: userData?.data?.username,
+      username: userData.data.username,
     };
-    console.log(plantObj);
     createPlant({ variables: { ...plantObj } });
   }
 
