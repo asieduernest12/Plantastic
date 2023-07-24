@@ -49,17 +49,21 @@ function MyGarden(props) {
           }}
         >
           {/* first plant takes 2 columns and 2 rows*/}
-          <Box sx={{ gridColumn: "1 / 3", gridRow: "1 / 3", maxHeight: "400px" }}>
+          <Box sx={{ gridColumn: "1 / 3", gridRow: "1 / 3", maxHeight: "400px", position: "relative" }}>
             <NavLink to={`/plants/${firstPlant._id}`}>
               <ResponsiveImageContainer image={firstPlant.img} />
+              <FloatViewDetails />
             </NavLink>
           </Box>
 
           {/* rest of the plants take 1 column and 1 row */}
           {restOfPlants.map((plant) => (
-            <NavLink to={`/plants/${plant._id}`} key={plant._id}>
-              <ResponsiveImageContainer key={plant._id} image={plant.img} />
-            </NavLink>
+            <Box sx={{ position: "relative" }}>
+              <NavLink to={`/plants/${plant._id}`} key={plant._id}>
+                <ResponsiveImageContainer key={plant._id} image={plant.img} />
+                <FloatViewDetails />
+              </NavLink>
+            </Box>
           ))}
         </Box>
       </Stack>
@@ -68,3 +72,11 @@ function MyGarden(props) {
 }
 
 export default MyGarden;
+
+function FloatViewDetails() {
+  return (
+    <Box sx={{ display: "grid", placeContent: "center", position: "absolute", inset: "0", height: "100%", width: "100%", color: "white" }}>
+      <Typography variant="h2">View Details</Typography>
+    </Box>
+  );
+}
