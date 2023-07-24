@@ -17,7 +17,7 @@ export const LOGIN_USER = gql`
           idealLight
           watering
           username
-          
+
           plantNotes {
             noteId
             note
@@ -81,19 +81,9 @@ export const UPDATE_PLANT = gql`
 export const DELETE_PLANT = gql`
   mutation deletePlant($id: ID!) {
     deletePlant(id: $id) {
-      _id
-      latinName
-      commonName
-      img
-      idealLight
-      watering
       username
-      notification
-      plantNotes {
+      plants {
         _id
-        note
-        username
-        createdAt
       }
     }
   }

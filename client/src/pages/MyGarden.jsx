@@ -1,28 +1,25 @@
 import { useEffect, useState } from "react";
 import useAuthService from "../utils/authHook";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import { QUERY_USER } from "../utils/queries";
 import { useNavigate } from "react-router-dom";
+import client from "../client";
 
 export default function MyGarden() {
   /* FOR JOHN AND MANNINDER REMOVE BEFORE DEPLOYMENT */
-  const [useMockData] = useState(true); // if you want to use mockdata use true, if you want to use userdata use false
+  const [useMockData] = useState(false); // if you want to use mockdata use true, if you want to use userdata use false
+  const navigate = useNavigate();
   const Auth = useAuthService();
   const token = Auth.getToken();
   const user = Auth.getProfile(token);
   const username = user.data.username;
-  const navigate = useNavigate();
-  const [plantData, setPlantData] = useState(null);
-  const [getPlantData, { error, loading, data }] = useLazyQuery(QUERY_USER);
+  const { data } = useQuery(QUERY_USER, {
+    variables: { userId: user.data._id },
+    fetchPolicy: "network-only",
+  });
 
   /* FOR KATE: Performance - Remove before deployment and conditionally render based on useQuery hook*/
   /* This watches for changes in data, and user.data._id and sets setPlantData state */
-  useEffect(() => {
-    getPlantData({ variables: { userId: user.data._id } });
-    if (data) {
-      setPlantData(data.user.plants);
-    }
-  }, [data, getPlantData, user.data._id]);
 
   const mockUser = {
     username: "IamGroot",
@@ -64,8 +61,8 @@ export default function MyGarden() {
           );
         })}
       {!useMockData &&
-        plantData?.map((plant) => {
-          console.log(plant);
+        data &&
+        data.user.plants?.map((plant) => {
           return (
             <div>
               {/* All Material UI stuff will go inside this div */}

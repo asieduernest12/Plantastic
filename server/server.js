@@ -54,13 +54,18 @@ app.post("/api/fetchplant", async (req, res) => {
       "X-RapidAPI-Host": "house-plants2.p.rapidapi.com",
     },
   };
-  const response = await fetch(url, options);
-  if (response.ok) {
-    const data = await response.json();
+  try {
+    const response = await fetch(url, options);
+    if (response.ok) {
+      const data = await response.json();
 
-    res.send({ data });
-  } else {
-    console.error("failed");
+      res.send({ data });
+    } else {
+      console.error("failed");
+      res.send({ message: "no results" });
+    }
+  } catch (e) {
+    res.send({ message: "broken" });
   }
 });
 await connection;
