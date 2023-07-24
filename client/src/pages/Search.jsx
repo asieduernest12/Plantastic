@@ -22,6 +22,7 @@ export default function Search() {
       console.log({ plantData });
       setData(plantData.data);
     } catch (e) {
+      console.log(e)
     } finally {
       setLoading(false);
     }

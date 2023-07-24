@@ -17,9 +17,9 @@ export const LOGIN_USER = gql`
           idealLight
           watering
           username
-          notification
+          
           plantNotes {
-            _id
+            noteId
             note
             username
             createdAt
