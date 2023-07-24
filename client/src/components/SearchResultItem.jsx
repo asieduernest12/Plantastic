@@ -6,17 +6,20 @@ import { ADD_PLANT } from "../utils/mutations";
 import { useNavigate } from "react-router-dom";
 import { AddRounded } from "@mui/icons-material";
 
-export default function SearchResultItem({ imgLink, title, data, onClick }) {
+export default function SearchResultItem({ imgLink, title, data }) {
   const Auth = useAuthService();
   const navigate = useNavigate();
   const [createPlant] = useMutation(ADD_PLANT, {
     onError: (e) => {
       /* TO DO: add error handling */
       console.error(e.message);
+      alert("Error adding plant: " + e.message);
     },
     onCompleted: ({ plantData }) => {
       console.log({ plantData });
-      navigate("/mygarden");
+
+      alert("Plant added")
+      // navigate("/plan");
     },
   });
 
@@ -60,9 +63,6 @@ export default function SearchResultItem({ imgLink, title, data, onClick }) {
         <Typography variant="h2">{title}</Typography>
         <Button variant="contained" color="primary" onClick={addPlant} endIcon={<AddRounded />}>
           Add Plant
-        </Button>
-        <Button variant={"text"} onClick={onClick}>
-          Details
         </Button>
       </Stack>
     </Box>

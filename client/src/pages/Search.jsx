@@ -1,16 +1,13 @@
 // make a mui search component that is a
 import { SearchRounded } from "@mui/icons-material";
-import { Box, Button, FormControl, Modal, Popover, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import SearchResultItem from "../components/SearchResultItem";
-import PlantSearchDetails from "./PlantSearchDetails";
 
 export default function Search() {
   const [search, setSearch] = useState("");
   const [plantsFound, setPlantsFound] = useState(/** @type {HousePlant.PlantData[]|undefined}*/ (null));
   const [loading, setLoading] = useState(false);
-  const [openDetails, setOpenDetails] = useState(false);
-  const [detailIndex, setDetailIndex] = useState(undefined);
 
   async function handleApi(e) {
     e.preventDefault();
@@ -31,15 +28,6 @@ export default function Search() {
       setLoading(false);
     }
   }
-
-  const closeDetails = () => {
-    setOpenDetails(false);
-  };
-
-  const openDetailsAtIndex = (index) => {
-    setDetailIndex(index);
-    setOpenDetails(true);
-  };
 
   return (
     <Stack
@@ -96,7 +84,6 @@ export default function Search() {
                   imgLink={result?.item?.Img}
                   title={result?.item?.["Latin name"]}
                   data={result?.item}
-                  onClick={() => openDetailsAtIndex(index)}
                 />
               ))}
             </>
@@ -113,14 +100,6 @@ export default function Search() {
           <></>
         )}
       </Box>
-
-      <Popover open={openDetails} onClose={closeDetails}>
-        <Stack direction="row" sx={{ placeItems: "center" }}>
-          <Box width={"clamp(300,60%,800px)"}>
-            {detailIndex && plantsFound[detailIndex] ? <PlantSearchDetails plant={plantsFound[detailIndex]} /> : <></>}
-          </Box>
-        </Stack>
-      </Popover>
     </Stack>
   );
 }

@@ -3,6 +3,9 @@ import useAuthService from "../utils/authHook";
 import { Box, Grid, Popover, Stack, Typography } from "@mui/material";
 import { ResponsiveImageContainer } from "../components/ResponsiveImageContainer";
 import PlantSearchDetails from "./PlantSearchDetails";
+import { useQuery } from "@apollo/client";
+import { QUERY_PLANTS } from "../utils/queries";
+import { NavLink } from "react-router-dom";
 
 const fakePlants = Array(5)
   .fill(null)
@@ -19,7 +22,7 @@ const fakePlants = Array(5)
  */
 function MyGarden(props) {
   const auth = useAuthService();
-  const [firstPlant, ...restOfPlants] = fakePlants;
+  const { data, error, loading } = useQuery(QUERY_PLANTS);
   const [openDetails, setOpenDetails] = useState(false);
   const [detailIndex, setDetailIndex] = useState(undefined);
 
@@ -31,6 +34,12 @@ function MyGarden(props) {
     setDetailIndex(index);
     setOpenDetails(true);
   };
+
+  if (loading) {
+    return <Typography variant="h1">Loading...</Typography>;
+  }
+
+  const [firstPlant, ...restOfPlants] = data?.plants;
 
   return (
     <Stack className="MyGarden" sx={{ direction: "row", placeItems: "center" }}>
@@ -50,23 +59,25 @@ function MyGarden(props) {
           }}
         >
           {/* first plant takes 2 columns and 2 rows*/}
-          <Box sx={{ gridColumn: "1 / 3", gridRow: "1 / 3" }} onClick={() => openDetailsAtIndex(1)}>
-            <ResponsiveImageContainer image={firstPlant.image} />
+          <Box sx={{ gridColumn: "1 / 3", gridRow: "1 / 3", maxHeight: "400px" }}>
+            <NavLink to={`/plants/${firstPlant._id}`}>
+              <ResponsiveImageContainer image={firstPlant.img} />
+            </NavLink>
           </Box>
 
           {/* rest of the plants take 1 column and 1 row */}
           {restOfPlants.map((plant) => (
-            <Box key={plant._id} onClick={() => openDetailsAtIndex(1)}>
-              <ResponsiveImageContainer key={plant._id} image={plant.image} />
-            </Box>
+            <NavLink to={`/plants/${plant._id}`} key={plant._id}>
+              <ResponsiveImageContainer key={plant._id} image={plant.img} />
+            </NavLink>
           ))}
         </Box>
 
-        <Popover open={openDetails} onClose={closeDetails}>
+        {/* <Popover open={openDetails} onClose={closeDetails}>
           <Stack direction="row" sx={{ placeItems: "center" }}>
             <Box width={"clamp(300,60%,800px)"}>{firstPlant ? <PlantSearchDetails plant={firstPlant} /> : <></>}</Box>
           </Stack>
-        </Popover>
+        </Popover> */}
       </Stack>
     </Stack>
   );
