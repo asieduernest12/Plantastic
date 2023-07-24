@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useAuthService from "../utils/authHook";
 import { Box, Grid, Popover, Stack, Typography } from "@mui/material";
 import { ResponsiveImageContainer } from "../components/ResponsiveImageContainer";
-import PlantSearchDetails from "./PlantSearchDetails";
+import PlantDetails from "./PlantDetails";
 import { useQuery } from "@apollo/client";
 import { QUERY_PLANTS } from "../utils/queries";
 import { NavLink } from "react-router-dom";

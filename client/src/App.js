@@ -7,7 +7,7 @@ import Header from "./components/Header";
 import "./App.css";
 import { Box } from "@mui/material";
 import Login from "./pages/Login";
-import PlantSearchDetails from "./pages/PlantSearchDetails";
+import PlantDetails from "./pages/PlantDetails";
 function App() {
   return (
     <Box className="App debug-outline" display={"flex"} sx={{ height: "100vh", width: "100wh" }}>
@@ -18,7 +18,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/plants/:id" element={<PlantSearchDetails />} />
+          <Route path="/plants/:id" element={<PlantDetails />} />
           <Route path="*" element={<>You are so lost now. Go home</>} />
         </Routes>
       </Box>
