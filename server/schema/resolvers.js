@@ -3,13 +3,24 @@ import Plant from "../models/Plant.js";
 import User from "../models/User.js";
 import Plantnote from "../models/Plantnote.js";
 import { signToken } from "../utils/auth.js";
+import jwt from "jsonwebtoken";
 
 const resolvers = {
   Query: {
+    me: async (_, __, { token }) => {
+      if (token) {
+        const validToken = await jwt.verify(token, "mysecretsshhhhh");
+        const user = await User.findById(validToken._id).populate("plants");
+        console.log({ validToken });
+        return user;
+      }
+    },
     // Query for a single user
     user: async (parent, { id }) => {
+      console.log("id here", id);
       try {
         const user = await User.findById(id).populate("plants");
+        console.log({ user });
         return user;
       } catch (error) {
         throw new Error("Failed to fetch user");
@@ -18,7 +29,9 @@ const resolvers = {
     // Query for all users
     users: async () => {
       try {
-        const users = await User.find({}).populate("plants").populate("plantsWithNotis");
+        const users = await User.find({})
+          .populate("plants")
+          .populate("plantsWithNotis");
         return users;
       } catch (error) {
         throw new Error("Failed to fetch users");
@@ -34,10 +47,11 @@ const resolvers = {
       }
     },
     // Query for all plants
-    plants: async () => {
+    plants: async (parent, { user_id }) => {
+      console.log(user_id);
       try {
-        const plants = await Plant.find({});
-        return plants;
+        const user = await User.findById(user_id).populate("plants");
+        return user;
       } catch (error) {
         throw new Error("Failed to fetch plants");
       }
@@ -69,7 +83,7 @@ const resolvers = {
     // Query for all plantnotes
     plantNotes: async (parent, { id }) => {
       try {
-        const plant = await Plant.findById( id );
+        const plant = await Plant.findById(id);
 
         if (!plant) {
           throw new Error("Plant not found");
@@ -83,11 +97,6 @@ const resolvers = {
       }
     },
   },
-
-
-
-
-
 
   Mutation: {
     // Mutation to create a new user
@@ -121,7 +130,7 @@ const resolvers = {
         ).populate("plants");
 
         const token = signToken(user); // Generate token using updated user
-console.log(user)
+        console.log(user);
         return { token, user };
       } catch (error) {
         console.error(error.message);
@@ -193,7 +202,9 @@ console.log(user)
           { username: username },
           { $addToSet: { plants: plant._id } },
           { new: true }
-        ).populate("plants").populate("plantsWithNotis");
+        )
+          .populate("plants")
+          .populate("plantsWithNotis");
       } catch (error) {
         console.error(error.message);
         throw new Error("Failed to add plant");
@@ -238,30 +249,30 @@ console.log(user)
           { username: plant.username },
           { $pull: { plants: { _id: id } } },
           { new: true }
-        ).populate("plants").populate("plantsWithNotis");
+        )
+          .populate("plants")
+          .populate("plantsWithNotis");
       } catch (error) {
         console.error(error.message);
         throw new Error("Failed to delete plant");
       }
     },
 
-
     // mutation to delete plant note from user's plant notes
     deletePlantNote: async (parent, { id, noteId }) => {
       try {
         // Find the associated Plant and pull the note from the plantNotes array
         const plant = await Plant.findByIdAndUpdate(
-          id, 
+          id,
           { $pull: { plantNotes: { noteId: noteId } } },
           { new: true }
-          );
+        );
         if (!plant) {
           throw new Error("Plant not found");
         }
 
         // Return the updated plant
         return plant;
-
       } catch (error) {
         console.error(error.message);
         throw new Error("Failed to delete plant note");
@@ -316,7 +327,9 @@ console.log(user)
           { username: username },
           { $addToSet: { plantsWithNotis: id } },
           { new: true }
-        ).populate("plants").populate("plantsWithNotis");
+        )
+          .populate("plants")
+          .populate("plantsWithNotis");
         return user;
       } catch (error) {
         console.log(error.message);
@@ -325,19 +338,21 @@ console.log(user)
     },
 
     // mutation to set plant notification back to false
-setPlantNotificationsFalse: async (parent, { username, id }) => {
-  try {
-    const user = await User.findOneAndUpdate(
-      { username: username },
-      { $pull: { plantsWithNotis: id } },
-      { new: true }
-    ).populate("plants").populate("plantsWithNotis");
-    return user;
-  } catch (error) {
-    console.log(error.message);
-    throw new Error("Failed to set plant notifications");
-  }
-},
+    setPlantNotificationsFalse: async (parent, { username, id }) => {
+      try {
+        const user = await User.findOneAndUpdate(
+          { username: username },
+          { $pull: { plantsWithNotis: id } },
+          { new: true }
+        )
+          .populate("plants")
+          .populate("plantsWithNotis");
+        return user;
+      } catch (error) {
+        console.log(error.message);
+        throw new Error("Failed to set plant notifications");
+      }
+    },
   },
 };
 

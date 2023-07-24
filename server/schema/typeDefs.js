@@ -33,11 +33,12 @@ const typeDefs = `
 
   type Query {
     users: [User]
-    user(id: ID!): User!
-    plants: [Plant]
+    user(id: ID!): User
+    plants: User!
     plant(id: ID!): Plant!
     plantNotes(id: ID!): [Plantnote]
     plantNote(id: ID!, noteId: String!): Plantnote!
+    me: User
   }
 
   type Mutation {
