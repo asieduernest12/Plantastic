@@ -14,12 +14,13 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "../../src/App.css";
 import Copyright from "../components/Copyright";
-import Auth from "../utils/authHook";
 import { ADD_USER } from "../utils/mutations";
+import useAuthService from "../utils/authHook";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 export default function SignUp() {
+  const Auth = useAuthService();
   const [userFormData, setUserFormData] = useState({
     username: "username",
     email: "",
@@ -44,7 +45,7 @@ export default function SignUp() {
       const response = await addUser({
         variables: { ...userFormData },
       });
-      const { token } = response.data.addUser;
+      const { token } = response.data.userdata;
       Auth.login(token);
     } catch (err) {
       console.error(err);
@@ -130,12 +131,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -197,14 +193,7 @@ export default function SignUp() {
               </Grid> */}
             </Grid>
             <Button
-              disabled={
-                !(
-                  userFormData.email &&
-                  userFormData.password &&
-                  !emailHasErr &&
-                  !passwordHasErr
-                )
-              }
+              disabled={!(userFormData.email && userFormData.password && !emailHasErr && !passwordHasErr)}
               type="submit"
               fullWidth
               variant="contained"
