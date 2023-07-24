@@ -23,7 +23,6 @@ export const authMiddleware = async function ({ req }) {
     return req;
   }
 
-  console.log({ token });
   try {
     const { data } = jwt.verify(token, secret, { maxAge: expiration });
     const user = await User.findById(data._id);
