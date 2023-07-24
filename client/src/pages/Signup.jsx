@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,7 +14,7 @@ import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../utils/mutations";
 import useAuthService from "../utils/authHook";
 
-import { Typography } from "@mui/material";
+import { FormHelperText, Typography } from "@mui/material";
 import Copyright from "../components/Copyright";
 
 // TODO remove, this demo shouldn't need to reset the theme.
@@ -28,8 +28,14 @@ export default function SignUp() {
     password: "",
     validatePassword: "",
   });
+  const [hasError, setHasError] = useState({
+    username: false,
+    email: false,
+    password: false,
+    validatePassword: false,
+  });
   const [disabled, setDisabled] = useState(true);
-  const Auth=useAuthService();
+  const Auth = useAuthService();
   const [createUser, { loading }] = useMutation(ADD_USER, {
     onError: (e) => {
       /* TO DO: add error handling */
@@ -41,19 +47,19 @@ export default function SignUp() {
       navigate("/");
     },
   });
+  const isValidPassword = useCallback((password) => {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%^&*()_+])[A-Za-z\d@#$!%^&*()_+]{6,}$/;
+    return passwordRegex.test(password);
+  }, []);
+  // Checks user email input against regex, returns boolean
+  const isValidEmail = useCallback((email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }, []);
 
   useEffect(() => {
     // Checks user password input against regex, returns boolean
-    function isValidPassword(password) {
-      const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$!%^&*()_+])[A-Za-z\d@#$!%^&*()_+]{6,}$/;
-      return passwordRegex.test(password);
-    }
-    // Checks user email input against regex, returns boolean
-    function isValidEmail(email) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      return emailRegex.test(email);
-    }
 
     /* If password meets regex, and email meets regex, and pass === validate pass return true, else false  */
     const valid =
@@ -63,10 +69,10 @@ export default function SignUp() {
       isValidEmail(signUpForm.email);
     /* sets state value to disable button */
     setDisabled(!valid);
-    console.log( valid );
+    console.log(valid);
     console.log(signUpForm);
-    console.log(isValidPassword(signUpForm.password))
-    console.log(isValidEmail(signUpForm.email))
+    console.log(isValidPassword(signUpForm.password));
+    console.log(isValidEmail(signUpForm.email));
   }, [signUpForm]);
 
   function handleChange(event) {
@@ -78,6 +84,39 @@ export default function SignUp() {
   async function handleSubmit() {
     createUser({ variables: { ...signUpForm } });
   }
+
+  function handleBlur(e) {
+    const element = e.target.name;
+    const value = e.target.value;
+    console.log({ element, value });
+    switch (element) {
+      case "username": {
+        return setHasError((prev) => {
+          return { ...prev, username: !signUpForm.username.length > 0 };
+        });
+      }
+      case "email": {
+        return setHasError((prev) => {
+          return { ...prev, email: !isValidEmail(value) };
+        });
+      }
+      case "password": {
+        return setHasError((prev) => {
+          return { ...prev, password: !isValidPassword(value) };
+        });
+      }
+      case "validatePassword": {
+        return setHasError((prev) => {
+          return { ...prev, validatePassword: signUpForm.password !== value };
+        });
+      }
+      default: {
+        return setHasError((prev) => prev);
+      }
+    }
+  }
+
+  console.log({ hasError });
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -107,6 +146,7 @@ export default function SignUp() {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
+                    onBlur={handleBlur}
                     required
                     fullWidth
                     id="username"
@@ -115,9 +155,15 @@ export default function SignUp() {
                     autoComplete="username"
                     onChange={(e) => handleChange(e)}
                   />
+                  {hasError.username && (
+                    <FormHelperText error>
+                      Username cannot be blank
+                    </FormHelperText>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    onBlur={handleBlur}
                     required
                     fullWidth
                     id="email"
@@ -126,9 +172,15 @@ export default function SignUp() {
                     autoComplete="email"
                     onChange={(e) => handleChange(e)}
                   />
+                  {hasError.email && (
+                    <FormHelperText error>
+                      {signUpForm.email} is not a valid email.
+                    </FormHelperText>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    onBlur={handleBlur}
                     required
                     fullWidth
                     name="password"
@@ -138,9 +190,16 @@ export default function SignUp() {
                     autoComplete="new-password"
                     onChange={(e) => handleChange(e)}
                   />
+                  {hasError.password && (
+                    <FormHelperText error>
+                      Must be at least 6 characters w/ uppercase, lowercase, &
+                      special character.
+                    </FormHelperText>
+                  )}
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    onBlur={handleBlur}
                     required
                     fullWidth
                     name="validatePassword"
@@ -149,6 +208,11 @@ export default function SignUp() {
                     id="validatePassword"
                     onChange={(e) => handleChange(e)}
                   />
+                  {hasError.validatePassword && (
+                    <FormHelperText error>
+                      Passwords don't match.
+                    </FormHelperText>
+                  )}
                 </Grid>
               </Grid>
               <Button
@@ -180,5 +244,3 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
-
-
