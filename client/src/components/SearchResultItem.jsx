@@ -36,7 +36,7 @@ export default function SearchResultItem({ imgLink, title, data }) {
       username: userData?.data?.username,
     };
     console.log(plantObj);
-    createPlant({ variables: { ...plantObj }, refreshQueries: [QUERY_PLANTS] });
+    createPlant({ variables: { ...plantObj } });
   }
 
   return (
