@@ -140,7 +140,7 @@ const resolvers = {
     },
     // Mutation to login a user
     login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ email }).populate("plants");
 
       if (!user) {
         throw new Error("No user found with this email address");
@@ -152,7 +152,7 @@ const resolvers = {
         throw new Error("Incorrect credentials");
       }
 
-      const token = signToken(user._id);
+      const token = signToken(user);
 
       return { token, user };
     },
