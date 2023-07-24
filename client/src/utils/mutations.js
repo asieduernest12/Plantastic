@@ -13,35 +13,7 @@ export const LOGIN_USER = gql`
     }
   }
 `;
-// login(email: String!, password: String!): Auth!
-export const USER_DETAILS = gql`
-  mutation loginUser($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-      user {
-        _id
-        username
-        email
-        plants {
-          _id
-          latinName
-          commonName
-          img
-          idealLight
-          watering
-          username
-          notification
-          plantNotes {
-            _id
-            note
-            username
-            createdAt
-          }
-        }
-      }
-    }
-  }
-`;
+
 //  addPlant(latinName: String!, commonName: String!, img: String!, idealLight: String!, watering: String!, username: String!): Plant!
 
 export const ADD_PLANT = gql`
