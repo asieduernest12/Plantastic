@@ -2,7 +2,8 @@ import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { QUERY_PLANT, QUERY_USER } from "../utils/queries";
 import { useEffect, useState } from "react";
-import { Button, IconButton, TextField } from "@mui/material";
+import { Button, IconButton, TextField, Switch } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { DELETE_PLANT } from "../utils/mutations";
 import useAuthService from "../utils/authHook";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -19,6 +20,11 @@ export default function PlantDetails() {
   useQuery(QUERY_USER, {
     variables: { userId: user.data._id },
   });
+
+  const [notification, setNotification] = useState(false);
+  const handleSwitchChange = () => {
+    setNotification((prevNotification) => !prevNotification);
+  };
 
   const [getPlantData, { error, data }] = useLazyQuery(QUERY_PLANT);
   const [deletePlantById] = useMutation(DELETE_PLANT, {
@@ -51,7 +57,9 @@ export default function PlantDetails() {
           justifyContent: "space-evenly",
         }}
       >
-        <div style={{ padding: "20px" }}>
+        <div
+          style={{ padding: "20px", display: "flex", flexDirection: "column" }}
+        >
           <h1>{singlePlantData?.plant?.latinName}</h1>
           <a
             href={singlePlantData?.plant?.img}
@@ -64,6 +72,16 @@ export default function PlantDetails() {
               style={{ borderRadius: "10px" }}
             />
           </a>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={notification}
+                onChange={handleSwitchChange}
+                color="success"
+              />
+            }
+            label="Email Care Reminder" // Label for the Switch
+          />
         </div>
         <div>
           <div style={{ padding: "40px" }}>
