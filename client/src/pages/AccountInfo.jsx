@@ -9,6 +9,7 @@ import {
   Stack,
   TextField,
   Typography,
+  FormHelperText,
 } from "@mui/material";
 //import { useState } from "react";
 import { useMutation } from "@apollo/client";
@@ -16,15 +17,20 @@ import { NavLink } from "react-router-dom";
 import Copyright from "../components/Copyright";
 import useAuthService from "../utils/authHook";
 import { UPDATE_USER } from "../utils/mutations";
+import { useNavigate } from "react-router-dom";
+import { DELETE_USER } from "../utils/mutations";
+
+
 
 
 
 
 export default function AccountInfo() {
-const [userFormData, setUserFormData] = useState({ email: "", password: "" });
+const [userFormData, setUserFormData] = useState({ email: "", username: "" });
 const [validated] = useState(false);
 const [showAlert, setShowAlert] = useState(false);
 const [updateUser, { error }] = useMutation(UPDATE_USER);
+const [deleteUser, { err }] = useMutation(DELETE_USER);
 const Auth = useAuthService();
 
 const handleInputChange = (event) => {
@@ -35,7 +41,7 @@ const handleInputChange = (event) => {
     });
 };
     
-const handleFormSubmit = async (event) => {
+const handleFormSubmit = async (event ) => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
@@ -44,7 +50,7 @@ const handleFormSubmit = async (event) => {
     }
     try {
         const response = await updateUser({
-            variables: { ...userFormData },
+            variables: { ...userFormData, id: Auth.getProfile().data._id },
         });
         const { token } = response.data.updateUser;
         Auth.login(token);
@@ -53,7 +59,7 @@ const handleFormSubmit = async (event) => {
     }
     setUserFormData({
         email: "",
-        password: "",
+        username: "",
     });
 };
 
@@ -79,6 +85,10 @@ return (
             margin: "auto",
           }}
         >
+          {error && (
+          <FormHelperText error={error}>
+                      Username or email already exists. Please try again.
+                    </FormHelperText>)}
           {/* change Logo*/}
           <Avatar sx={{ bgcolor: "secondary.main" }}>
             {/* <LockIcon sx={{ alignSelf: "center" }} /> */}
@@ -100,9 +110,8 @@ return (
               required
               //onBlur={handleEmailBlur}
             />
-            {/* {emailHasErr && (
-              <p className="text-danger">Please enter a valid email.</p>
-            )} */}
+            
+          
           </FormControl>
 
           <FormControl sx={{ width: "100%" }}>
@@ -117,13 +126,32 @@ return (
               required
               //   onBlur={handlePasswordBlur}
             />
-            {/* {passwordHasErr && (
-              <p className="text-danger">Please enter a valid password.</p>
-            )} */}
+          
+            
           </FormControl>
 
           <Button type="submit" variant="contained" sx={{ width: "100%" }}>
             Update Profile
+          </Button>
+          <Button type="submit" variant="contained" sx={{ width: "100%" }} onClick={
+            async (event) => {
+              event.preventDefault();
+              try {
+                const response = await deleteUser({
+                  variables: { id: Auth.getProfile().data._id },
+                });
+                const { token } = response.data.deleteUser;
+                Auth.login(token);
+              } catch (err) {
+                setShowAlert(true);
+              }
+              setUserFormData({
+                email: "",
+                username: "",
+              });
+            }
+          }>
+            Delete Profile
           </Button>
 
           {/* <Box sx={{ textAlign: "end", alignSelf: "end" }}>
