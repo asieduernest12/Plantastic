@@ -45,32 +45,47 @@ export default function MyGarden() {
   }
 
   return (
-    <Grid container spacing={2}>
+    <div>
       {useMockData &&
-        mockPlantData.map((item) => (
-          <Grid item xs={12} sm={6} md={4} key={item.id}>
-            <img
-              src={item.img}
-              alt=""
-              onClick={() => {
-                handleClick(item.id);
-              }}
-            />
-          </Grid>
-        ))}
+        mockPlantData.map((item) => {
+          return (
+            <div>
+              {/* All Material UI stuff will go inside this div */}
+              <img
+                src={item.img}
+                alt=""
+                onClick={() => {
+                  handleClick(item.id);
+                }}
+              />
+            </div>
+          );
+        })}
       {!useMockData &&
         data &&
-        data.user.plants?.map((plant) => (
-          <Grid item xs={12} sm={6} md={4} key={plant._id}>
-            <img
-              src={plant.img}
-              alt=""
-              onClick={() => {
-                handleClick(plant._id);
-              }}
-            />
-          </Grid>
-        ))}
+        data.user.plants?.map((plant) => {
+          return (
+            <div>
+              {/* All Material UI stuff will go inside this div */}
+             
+              <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+  { data.user.plants?.map((plant, index) => (
+    <Grid item xs={2} sm={4} md={4} key={index}>
+      <div>
+        <img
+          src={plant.img}
+          alt=""
+          onClick={() => {
+            handleClick(plant._id);
+          }}
+        />
+      </div>
     </Grid>
+  ))}
+</Grid>
+            </div>
+          );
+        })}
+    </div>
   );
 }

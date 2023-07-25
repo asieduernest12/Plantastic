@@ -55,7 +55,7 @@ export default function SearchResultDetail({ imgLink, title, data }) {
 
       <Stack>
         <Typography variant="h2">{title}</Typography>
-        <Button variant="contained" color="primary" onClick={addPlant}>
+        <Button variant="contained" color="success" onClick={addPlant}>
           Add Plant
         </Button>
       </Stack>

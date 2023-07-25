@@ -22,7 +22,4 @@
   color: var(--wht);
 }
 
-.debug-outline,
-.d-outline {
-  outline: 1px solid red;
-}
+
