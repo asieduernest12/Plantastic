@@ -11,7 +11,8 @@ import {
   Typography,
   FormHelperText,
 } from "@mui/material";
-//import { useState } from "react";
+
+import Auth from "../utils/authHook";
 import { useMutation } from "@apollo/client";
 import { NavLink } from "react-router-dom";
 import Copyright from "../components/Copyright";
@@ -32,6 +33,8 @@ const [showAlert, setShowAlert] = useState(false);
 const [updateUser, { error }] = useMutation(UPDATE_USER);
 const [deleteUser, { err }] = useMutation(DELETE_USER);
 const Auth = useAuthService();
+const navigate = useNavigate();
+
 
 const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -40,6 +43,25 @@ const handleInputChange = (event) => {
         [name]: value,
     });
 };
+
+const userDelete = async (event) => {
+    event.preventDefault();
+    try {
+        const response = await deleteUser({
+            variables: { id: Auth.getProfile().data._id },
+        });
+        
+        setUserFormData({
+            email: "",
+            username: "",
+        });
+        // Redirect to the homepage after deleting the user
+        navigate('/');
+    } catch (err) {
+        setShowAlert(true);
+    }
+};
+
     
 const handleFormSubmit = async (event ) => {
     event.preventDefault();
@@ -53,7 +75,7 @@ const handleFormSubmit = async (event ) => {
             variables: { ...userFormData, id: Auth.getProfile().data._id },
         });
         const { token } = response.data.updateUser;
-        Auth.login(token);
+       
     } catch (err) {
         setShowAlert(true);
     }
@@ -108,7 +130,7 @@ return (
               onChange={handleInputChange}
               value={userFormData.username}
               required
-              //onBlur={handleEmailBlur}
+              
             />
             
           
@@ -124,7 +146,7 @@ return (
               value={userFormData.email}
               onChange={handleInputChange}
               required
-              //   onBlur={handlePasswordBlur}
+              
             />
           
             
@@ -133,30 +155,12 @@ return (
           <Button type="submit" variant="contained" sx={{ width: "100%" }}>
             Update Profile
           </Button>
-          <Button type="submit" variant="contained" sx={{ width: "100%" }} onClick={
-            async (event) => {
-              event.preventDefault();
-              try {
-                const response = await deleteUser({
-                  variables: { id: Auth.getProfile().data._id },
-                });
-                const { token } = response.data.deleteUser;
-                Auth.login(token);
-              } catch (err) {
-                setShowAlert(true);
-              }
-              setUserFormData({
-                email: "",
-                username: "",
-              });
-            }
-          }>
-            Delete Profile
-          </Button>
-
-          {/* <Box sx={{ textAlign: "end", alignSelf: "end" }}>
-            <NavLink to="/signup">Create an account. Sign up</NavLink>
-          </Box> */}
+          <Button type="submit" variant="contained" sx={{ width: "100%" }} 
+          onClick={userDelete}
+    >
+      Delete Profile
+    </Button>
+          
 
           <Copyright sx={{ mt: 3 }} />
         </Stack>
