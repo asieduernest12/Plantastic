@@ -10,16 +10,29 @@ Interactive MERN Stack Single-Page Application for plant enthusiasts to catalog 
 - [Credits](#credits)
 - [License](#license)
 
-
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
+Plantastic is simple and intuitive. Users have the option to Login or Sign Up on visiting our homepage.
 
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
+![Plantastic Homepage](/client/public/SS_Home.png)
 
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
+When a new user signs up, they are sent a welcome email using nodemailer.
+
+![Welcome Email](/client/public/SS_NewUserEmail.png)
+
+New users are also automatically logged in. When a user logs in, they are redirect to their "My Garden" page. This is where their saved plants are displayed.
+
+![My Garden View](/client/public/SS_MyGarden.png)
+
+Using the search icon to the right takes users to the search page where they can find varius plants and add them to their garden.
+
+![Search View](/client/public/SS_Search.png)
+
+When a user clicks add plant, they are redirected to their "My Garden" view where the new plant is now displayed. From there the user can click any of their plants and view more details
+
+![Plant Details View](/client/public/SS_PlantDetails.png)
+
+The plant details view has a switch to turn email reminders on or off (this feature is still in development). They can also view helpful information about their plant, remove it from their garden, or add notes that will be displayed below.
 
 ## Credits
 
