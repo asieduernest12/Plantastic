@@ -162,20 +162,45 @@ export default function PlantDetails() {
         <div
           style={{
             margin: "20px",
-            backgroundColor: "#cae6d5",
+
             display: "flex",
-            justifyContent: "space-between",
+            flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <div>Plant notes will populate here with buttons to edit/delete</div>
-          <div>
-            <IconButton aria-label="add" size="large" color="success">
-              <NoteAddIcon fontSize="inherit" />
-            </IconButton>
-            <IconButton aria-label="delete" size="large" color="error">
-              <DeleteForeverIcon fontSize="inherit" />
-            </IconButton>
+          {/* Display plant notes */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            {data?.plant?.plantNotes.map((plantNote) => (
+              <div
+                key={plantNote._id}
+                style={{
+                  marginBottom: "10px",
+                  backgroundColor: "#cae6d5",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div key={plantNote._id}>
+                  <p style={{ paddingLeft: "20px" }}>{plantNote.note}</p>
+                </div>
+                <div>
+                  <IconButton aria-label="add" size="large" color="success">
+                    <NoteAddIcon fontSize="inherit" />
+                  </IconButton>
+                  <IconButton aria-label="delete" size="large" color="error">
+                    <DeleteForeverIcon fontSize="inherit" />
+                  </IconButton>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
