@@ -131,6 +131,18 @@ const resolvers = {
         throw new Error("Failed to update user");
       }
     },
+    
+    // Mutation to delete a user
+    deleteUser: async (parent, { id }) => {
+      try {
+        const user = await User.findByIdAndDelete(id);
+        return user;
+      } catch (error) {
+        console.error(error.message);
+        throw new Error("Failed to delete user");
+      }
+    },
+
     // Mutation to login a user
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email }).populate("plants");
