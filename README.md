@@ -10,10 +10,13 @@ Interactive MERN Stack Single-Page Application for plant enthusiasts to catalog 
 - [Credits](#credits)
 - [License](#license)
 
-
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
+Plantastic is simple and intuitive. Users have the option to Login or Sign Up on visiting our homepage.
+![Plantastic Homepage](/client/public/SS_Home.png)
+
+When a new user signs up, they are sent a welcome email using nodemailer.
+![Welcome Email](/client/public/SS_NewUserEmail.png)
 
 To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
 
