@@ -36,7 +36,6 @@ export default function Home() {
           </Button>
         </Stack>
       </Box>
-
     </Box>
   );
-} 
+}

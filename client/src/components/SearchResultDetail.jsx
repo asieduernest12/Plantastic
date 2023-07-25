@@ -13,7 +13,6 @@ export default function SearchResultDetail({ imgLink, title, data }) {
       console.error(e.message);
     },
     onCompleted: ({ plantData }) => {
-      console.log({ plantData });
       navigate("/mygarden");
     },
   });
