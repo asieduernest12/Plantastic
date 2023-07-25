@@ -1,19 +1,19 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { QUERY_PLANT, QUERY_USER } from "../utils/queries";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, IconButton, TextField, Switch } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { DELETE_PLANT } from "../utils/mutations";
+import { DELETE_PLANT, ADD_PLANT_NOTE } from "../utils/mutations";
 import useAuthService from "../utils/authHook";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
+import client from "../client";
 import "./plantDetails.css";
 
 export default function PlantDetails() {
-  const navigate = useNavigate("/mygarden");
+  const navigate = useNavigate("");
   const { plantId } = useParams();
-  const [singlePlantData, setSinglePlantData] = useState(null);
   const Auth = useAuthService();
   const token = Auth.getToken();
   const user = Auth.getProfile(token);
@@ -26,27 +26,52 @@ export default function PlantDetails() {
     setNotification((prevNotification) => !prevNotification);
   };
 
-  const [getPlantData, { error, data }] = useLazyQuery(QUERY_PLANT);
+  const { error, data } = useQuery(QUERY_PLANT, {
+    variables: { plantId },
+    fetchPolicy: "network-only",
+  });
   const [deletePlantById] = useMutation(DELETE_PLANT, {
-    onQueryUpdated: (updated) => {},
     onCompleted: () => {
       navigate("/mygarden");
     },
   });
 
-  /* FOR KATE: Performance - Remove before deployment and conditionally render based on useQuery hook*/
-  useEffect(() => {
-    getPlantData({ variables: { plantId: plantId } });
-    if (data) {
-      setSinglePlantData(data);
+  const [note, setNote] = useState("");
+
+  const [addPlantNoteToPlant] = useMutation(ADD_PLANT_NOTE, {
+    onCompleted: () => {
+      setNote("");
+      client.reFetchObservableQueries();
+    },
+  });
+
+  const handleAddNote = async () => {
+    if (note.trim() === "") {
+      // Add validation to prevent empty notes from being added
+      return;
     }
-  }, [data, getPlantData, plantId]);
+
+    try {
+      addPlantNoteToPlant({
+        variables: {
+          id: plantId,
+          note: note,
+          username: user?.data?.username,
+        },
+      });
+    } catch (error) {
+      // Handle error (optional)
+      console.error("Error adding note:", error.message);
+    }
+  };
+
   if (error) {
     console.warn(error);
   }
   async function deletePlant() {
     deletePlantById({ variables: { id: plantId } });
   }
+
   return (
     <div style={{ width: "100%" }}>
       <div
@@ -57,17 +82,14 @@ export default function PlantDetails() {
           justifyContent: "space-evenly",
         }}
       >
+        {/* Holds Name, Img, and Swithc */}
         <div
           style={{ padding: "20px", display: "flex", flexDirection: "column" }}
         >
-          <h1>{singlePlantData?.plant?.latinName}</h1>
-          <a
-            href={singlePlantData?.plant?.img}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <h1>{data?.plant?.latinName}</h1>
+          <a href={data?.plant?.img} target="_blank" rel="noopener noreferrer">
             <img
-              src={singlePlantData?.plant?.img}
+              src={data?.plant?.img}
               alt="Plant"
               style={{ borderRadius: "10px" }}
             />
@@ -80,29 +102,25 @@ export default function PlantDetails() {
                 color="success"
               />
             }
-            label="Email Care Reminder" // Label for the Switch
+            label="Email Care Reminder"
           />
         </div>
+        {/* Holds Plant Details and Delete Button */}
         <div>
           <div style={{ padding: "40px" }}>
             <h2>Common Name:</h2>
-            <p style={{ fontSize: "22px" }}>
-              {singlePlantData?.plant?.commonName}
-            </p>
+            <p style={{ fontSize: "22px" }}>{data?.plant?.commonName}</p>
             <h2>Ideal Light:</h2>
-            <p style={{ fontSize: "22px" }}>
-              {singlePlantData?.plant?.idealLight}
-            </p>
+            <p style={{ fontSize: "22px" }}>{data?.plant?.idealLight}</p>
             <h2>Watering:</h2>
-            <p style={{ fontSize: "22px" }}>
-              {singlePlantData?.plant?.watering}
-            </p>
+            <p style={{ fontSize: "22px" }}>{data?.plant?.watering}</p>
             <Button variant="contained" color="success" onClick={deletePlant}>
               DELETE PLANT
             </Button>
           </div>
         </div>
       </div>
+      {/* Holds Note Field, Button, and Notes Array */}
       <div
         style={{
           margin: "20px",
@@ -119,6 +137,7 @@ export default function PlantDetails() {
         >
           {" "}
           <TextField
+            onChange={(e) => setNote(e.target.value)}
             id="outlined-multiline-flexible"
             label="Add a note"
             multiline
@@ -135,7 +154,7 @@ export default function PlantDetails() {
             variant="contained"
             color="success"
             style={{ width: "200px", alignSelf: "center" }}
-            onClick={deletePlant}
+            onClick={handleAddNote}
           >
             ADD NOTE
           </Button>
