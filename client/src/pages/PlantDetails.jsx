@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import { DELETE_PLANT } from "../utils/mutations";
 import client from "../client.js";
 import useAuthService from "../utils/authHook";
+import { ForkLeft } from "@mui/icons-material";
 
 export default function PlantDetails() {
   const navigate = useNavigate("/mygarden");
@@ -61,17 +62,30 @@ export default function PlantDetails() {
     deletePlantById({ variables: { id: plantId } });
   }
   return (
+    <div style={{ marginLeft: "20px",display: "flex", justifyContent: "space-around" }}>
+    <div style={{ padding: "20px" }}>
+    <h1>{singlePlantData?.plant?.latinName}</h1>
+      <a href={singlePlantData?.plant?.img} target="_blank" rel="noopener noreferrer">
+        <img src={singlePlantData?.plant?.img} alt="Plant" />
+      </a>
+    </div>
     <div>
-      {/* All Material UI stuff will go inside this div */}
+  
       {useMockData && <div>{fakePlantData.commonName}</div>}
       {!useMockData && (
-        <div>
-          {singlePlantData?.plant?.commonName}
+       <div style={{ padding: "40px" }}>
+          <h2>Common Name:</h2>
+          <p>{singlePlantData?.plant?.commonName}</p>
+          <h2>Ideal Light:</h2>
+          <p>{singlePlantData?.plant?.idealLight}</p>
+          <h2>Watering:</h2>
+          <p>{singlePlantData?.plant?.watering}</p>
           <Button variant="contained" color="success" onClick={deletePlant}>
             DELETE PLANT
           </Button>
         </div>
       )}
     </div>
+  </div>
   );
 }
