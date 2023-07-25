@@ -80,7 +80,7 @@ export default function Login() {
           </Avatar>
 
           <Typography component="h1" variant="h5">
-            Login
+            <span style={{ fontFamily: "var(--bodyFont)" }}>Login</span>
           </Typography>
 
           <FormControl sx={{ width: "100%" }}>
@@ -117,7 +117,11 @@ export default function Login() {
             )} */}
           </FormControl>
 
-          <Button type="submit" variant="contained" sx={{ width: "100%", bgcolor: "#013927" }}>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ width: "100%", bgcolor: "#013927" }}
+          >
             Login
           </Button>
 

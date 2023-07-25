@@ -130,10 +130,15 @@ function Nav(
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Plantastic
+            <span
+              style={{
+                fontFamily: "var(--mainFont)",
+              }}
+            >
+              Plantastic
+            </span>
           </Typography>
-          <IconButton color="inherit">
-          </IconButton>
+          <IconButton color="inherit"></IconButton>
 
           <IconButton color="inherit" disabled={!Auth.isLoggedIn()}
             // onClick={(e) => {
