@@ -135,7 +135,12 @@ function Nav(
           <IconButton color="inherit">
           </IconButton>
 
-          <IconButton color="inherit" disabled={!Auth.isLoggedIn()}>
+          <IconButton color="inherit" disabled={!Auth.isLoggedIn()}
+            // onClick={(e) => {
+            //   e.preventDefault();
+            //   <NavLink to="/accountInfo" />;
+            // }}
+          >
             <PersonIcon />
           </IconButton>
         </Toolbar>
