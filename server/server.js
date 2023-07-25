@@ -19,6 +19,9 @@ dotenv.config();
 
 const app = express();
 const httpServer = http.createServer(app);
+app.use(cors({ origin: "*" }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const server = new ApolloServer({
   typeDefs,
@@ -36,12 +39,35 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(
   "/graphql",
-  cors({ origin: "*" }),
-  express.json(),
   expressMiddleware(server, {
     context: async ({ req }) => ({ token: req.headers.token }),
   })
 );
+
+app.post("/api/fetchplant", async (req, res) => {
+  const key = process.env.APIKEY;
+  const url = `https://house-plants2.p.rapidapi.com/search?query=${req.body.searchTerm}`;
+  const options = {
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": key,
+      "X-RapidAPI-Host": "house-plants2.p.rapidapi.com",
+    },
+  };
+  try {
+    const response = await fetch(url, options);
+    if (response.ok) {
+      const data = await response.json();
+
+      res.send({ data });
+    } else {
+      console.error("failed");
+      res.send({ message: "no results" });
+    }
+  } catch (e) {
+    res.send({ message: "broken" });
+  }
+});
 await connection;
 await new Promise((resolve) =>
   httpServer.listen({ port: process.env.PORT || 4000 }, resolve)
