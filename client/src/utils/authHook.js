@@ -12,9 +12,8 @@ export default function useAuthService() {
 
   // check if user's logged in
   const loggedIn = () => {
-    // Checks if there is a saved token and it's still valid
-    const token = this.getToken();
-    return !!token && !this.isTokenExpired(token); // handwaiving here
+    const token = getToken();
+    return !!token && !isTokenExpired(token); // handwaiving here
   };
 
   // check if token is expired
@@ -38,7 +37,7 @@ export default function useAuthService() {
     // Saves user token to localStorage
     localStorage.setItem("id_token", idToken);
     // window.location.assign("/");
-    navigate("/search");
+    navigate("/mygarden");
   };
 
   const logout = () => {
