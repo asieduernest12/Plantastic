@@ -2,9 +2,11 @@ import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { QUERY_PLANT, QUERY_USER } from "../utils/queries";
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import { DELETE_PLANT } from "../utils/mutations";
 import useAuthService from "../utils/authHook";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 
 export default function PlantDetails() {
   const navigate = useNavigate("/mygarden");
@@ -53,7 +55,7 @@ export default function PlantDetails() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img src={singlePlantData?.plant?.img} alt="Plant" />
+         <img src={singlePlantData?.plant?.img} alt="Plant" style={{ borderRadius: "10px" }} />
         </a>
       </div>
       <div>
@@ -64,6 +66,21 @@ export default function PlantDetails() {
           <p>{singlePlantData?.plant?.idealLight}</p>
           <h2>Watering:</h2>
           <p>{singlePlantData?.plant?.watering}</p>
+         <p> <TextField 
+          id="outlined-multiline-flexible"
+          label="Add a note"
+          multiline
+          rows={4}
+          defaultValue=""
+        />
+        <IconButton aria-label="add" size="large" color="success">
+         <NoteAddIcon fontSize="inherit" />
+        </IconButton>
+          <IconButton aria-label="delete" size="large" color="error">
+         <DeleteForeverIcon fontSize="inherit" />
+        </IconButton>
+        </p>
+         
           <Button variant="contained" color="success" onClick={deletePlant}>
             DELETE PLANT
           </Button>
@@ -72,3 +89,4 @@ export default function PlantDetails() {
     </div>
   );
 }
+

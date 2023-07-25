@@ -20,7 +20,7 @@ export default function MyGarden() {
   }
 
   return (
-    <div style={{ margin: "20px" }}>
+    <div style={{ margin: "20px"}}>
       <div>
         <span style={{ fontSize: "32px", fontFamily: "var(--bodyFont)" }}>
           Hello,
@@ -38,20 +38,22 @@ export default function MyGarden() {
         <br />
         <br />
       </div>
-      <Grid container spacing={2}>
-        {data &&
-          data.user.plants?.map((plant) => (
-            <Grid item xs={12} sm={6} md={4} key={plant._id}>
-              <img
-                src={plant.img}
-                alt={plant.commonName}
-                onClick={() => {
-                  handleClick(plant._id);
-                }}
-              />
-            </Grid>
-          ))}
+      <Grid container spacing={2} >
+  {data &&
+    data.user.plants?.map((plant) => (
+      <Grid item xs={12} sm={6} md={4} key={plant._id} >
+        <img
+          src={plant.img}
+          alt={plant.commonName}
+          onClick={() => {
+            handleClick(plant._id);
+          }}
+          style={{ borderRadius: '20px' }}
+        />
       </Grid>
+    ))}
+</Grid>
+
     </div>
   );
 }
