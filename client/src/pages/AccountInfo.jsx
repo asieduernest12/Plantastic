@@ -43,6 +43,25 @@ const handleInputChange = (event) => {
         [name]: value,
     });
 };
+
+const userDelete = async (event) => {
+    event.preventDefault();
+    try {
+        const response = await deleteUser({
+            variables: { id: Auth.getProfile().data._id },
+        });
+        
+        setUserFormData({
+            email: "",
+            username: "",
+        });
+        // Redirect to the homepage after deleting the user
+        navigate('/');
+    } catch (err) {
+        setShowAlert(true);
+    }
+};
+
     
 const handleFormSubmit = async (event ) => {
     event.preventDefault();
@@ -111,7 +130,7 @@ return (
               onChange={handleInputChange}
               value={userFormData.username}
               required
-              //onBlur={handleEmailBlur}
+              
             />
             
           
@@ -127,7 +146,7 @@ return (
               value={userFormData.email}
               onChange={handleInputChange}
               required
-              //   onBlur={handlePasswordBlur}
+              
             />
           
             
@@ -136,24 +155,8 @@ return (
           <Button type="submit" variant="contained" sx={{ width: "100%" }}>
             Update Profile
           </Button>
-          <Button type="submit" variant="contained" sx={{ width: "100%" }} onClick={async (event) => {
-        event.preventDefault();
-        try {
-          const response = await deleteUser({
-            variables: { id: Auth.getProfile().data._id },
-          });
-          const { token } = response.data.deleteUser;
-          Auth.login(token);
-          setUserFormData({
-            email: "",
-            username: "",
-          });
-          // Redirect to the homepage after deleting the user
-          navigate('/');
-        } catch (err) {
-          setShowAlert(true);
-        }
-      }}
+          <Button type="submit" variant="contained" sx={{ width: "100%" }} 
+          onClick={userDelete}
     >
       Delete Profile
     </Button>
