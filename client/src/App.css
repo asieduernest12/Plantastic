@@ -12,12 +12,5 @@
   --mnt: #9ad7b5;
   --grn: #a7c957;
   --drk: #013927;
-  /* We may not need the following */
-  --ylw: #e1c340;
-  --brn: #bf773c;
 }
 
-.bg-primary {
-  background-color: var(--drk);
-  color: var(--wht);
-}

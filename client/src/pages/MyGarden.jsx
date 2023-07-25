@@ -15,9 +15,6 @@ export default function MyGarden() {
     fetchPolicy: "network-only",
   });
 
-  /* FOR KATE: Performance - Remove before deployment and conditionally render based on useQuery hook*/
-  /* This watches for changes in data, and user.data._id and sets setPlantData state */
-
   function handleClick(id) {
     navigate(`/plantdetails/${id}`);
   }

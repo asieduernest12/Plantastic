@@ -9,8 +9,6 @@ import { Box } from "@mui/material";
 import Login from "./pages/Login";
 import MyGarden from "./pages/MyGarden";
 import PlantDetails from "./pages/PlantDetails";
-import useAuthService from "./utils/authHook";
-//import AccountInfo from "./pages/AccountInfo";
 
 function App() {
   return (

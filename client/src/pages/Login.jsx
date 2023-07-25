@@ -18,9 +18,8 @@ import useAuthService from "../utils/authHook";
 import { LOGIN_USER } from "../utils/mutations";
 export default function Login() {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
-  const [validated] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [loginUser, { error }] = useMutation(LOGIN_USER);
+  const [setShowAlert] = useState(false);
+  const [loginUser] = useMutation(LOGIN_USER);
   const Auth = useAuthService();
 
   const handleInputChange = (event) => {
@@ -95,9 +94,6 @@ export default function Login() {
               required
               //onBlur={handleEmailBlur}
             />
-            {/* {emailHasErr && (
-              <p className="text-danger">Please enter a valid email.</p>
-            )} */}
           </FormControl>
 
           <FormControl sx={{ width: "100%" }}>
