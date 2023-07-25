@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 // import { useHistory } from "react-router-dom";
 import LockIcon from "@mui/icons-material/Lock";
-import { Avatar, Box, Button, FormControl, Stack, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  FormControl,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 //import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { NavLink } from "react-router-dom";
@@ -9,7 +17,7 @@ import Copyright from "../components/Copyright";
 import useAuthService from "../utils/authHook";
 import { LOGIN_USER } from "../utils/mutations";
 export default function Login() {
-  const [userFormData, setUserFormData] = useState({ email: "email@domain.com", password: "Password12345" });
+  const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [loginUser, { error }] = useMutation(LOGIN_USER);
@@ -45,7 +53,10 @@ export default function Login() {
     });
   };
   return (
-    <Stack direction="row" sx={{ height: "100%", width: "100%", placeContent: "center" }}>
+    <Stack
+      direction="row"
+      sx={{ height: "100%", width: "100%", placeContent: "center" }}
+    >
       <Stack
         component="form"
         className="login-form"

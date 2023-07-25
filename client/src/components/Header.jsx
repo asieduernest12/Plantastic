@@ -17,10 +17,10 @@ import {
   Notifications,
   Outbound,
   Person2Rounded as PersonIcon,
-  Search
+  Search,
+  LocalFlorist,
 } from "@mui/icons-material/";
 import useAuthService from "../utils/authHook";
-
 
 const drawerWidth = 240;
 const AppBar = styled(MuiAppBar, {
@@ -88,8 +88,16 @@ const useNavHandlers = () => {
   return { openDrawer, closeDrawer, navStates, toggleDrawer };
 };
 
-function Nav(/** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any}}*/ { open, toggleDrawer }) {
+function Nav(
+  /** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any}}*/ {
+    open,
+    toggleDrawer,
+  }
+) {
   const Auth = useAuthService();
+  function handleLogout() {
+    Auth.logout();
+  }
   return (
     <>
       <AppBar position="absolute" open={open}>
@@ -111,7 +119,13 @@ function Nav(/** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any
           >
             <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            sx={{ flexGrow: 1 }}
+          >
             Plantastic
           </Typography>
           <IconButton color="inherit">
@@ -143,26 +157,43 @@ function Nav(/** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any
           {/* {mainListItems} */}
           {/* {secondaryListItems} */}
           <ListItem>
-            <NavLink to="/">
-              <Button variant="text" startIcon={<HouseIcon />} color="success" sx={{ marginLeft: "-10px" }}>
-                {open ? <span>Home</span> : <></>}
+            <NavLink to={Auth.isLoggedIn() ? "/mygarden" : "/"}>
+              <Button
+                variant="text"
+                startIcon={Auth.isLoggedIn() ? <LocalFlorist /> : <HouseIcon />}
+                color="success"
+                sx={{ marginLeft: "-10px" }}
+              >
+                {open ? Auth.isLoggedIn() ? "My Garden" : "Home" : <></>}
               </Button>
             </NavLink>
           </ListItem>
           <ListItem>
             <NavLink to="/search">
-              <Button variant="text" startIcon={<Search />} color="success" sx={{ marginLeft: "-10px" }}>
+              <Button
+                variant="text"
+                startIcon={<Search />}
+                color="success"
+                sx={{ marginLeft: "-10px" }}
+              >
                 {open ? <span>Search</span> : <></>}
               </Button>
             </NavLink>
           </ListItem>
-          <ListItem>
-            <NavLink to="/signup">
-              <Button variant="text" startIcon={<PersonIcon />} color="success" sx={{ marginLeft: "-10px" }}>
-                {open ? <span>Sign up</span> : <></>}
-              </Button>
-            </NavLink>
-          </ListItem>
+          {!Auth.isLoggedIn() && (
+            <ListItem>
+              <NavLink to="/signup">
+                <Button
+                  variant="text"
+                  startIcon={<PersonIcon />}
+                  color="success"
+                  sx={{ marginLeft: "-10px" }}
+                >
+                  {open ? <span>Sign up</span> : <></>}
+                </Button>
+              </NavLink>
+            </ListItem>
+          )}
           <ListItem>
             <NavLink
               onClick={(e) => {
@@ -170,7 +201,13 @@ function Nav(/** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any
                 Auth.logout();
               }}
             >
-              <Button variant="text" startIcon={<Outbound />} color="success" sx={{ marginLeft: "-10px" }}>
+              <Button
+                variant="text"
+                startIcon={<Outbound />}
+                color="success"
+                onClick={handleLogout}
+                sx={{ marginLeft: "-10px" }}
+              >
                 {open ? <span>Log out</span> : <></>}
               </Button>
             </NavLink>

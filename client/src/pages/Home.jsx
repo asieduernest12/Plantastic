@@ -16,7 +16,7 @@ export default function Home() {
           alt="Plantastic Logo"
           style={{ objectFit: "cover", width: "100%", height: "100%" }}
         />
-        <Stack direction="row" sx={{ justifyContent: "center", gap: 2}}>
+        <Stack direction="row" sx={{ justifyContent: "center", gap: 2 }}>
           <Button
             className="login"
             variant="contained"
