@@ -67,7 +67,7 @@ export const UPDATE_PLANT = gql`
       idealLight
       watering
       username
-      
+
       plantNotes {
         noteId
         note
@@ -90,12 +90,19 @@ export const DELETE_PLANT = gql`
 `;
 
 export const ADD_PLANT_NOTE = gql`
-  mutation addPlantNote($note: String!, $username: String!) {
-    addPlantNote(note: $note, username: $username) {
-      noteId
-      note
-      username
-      createdAt
+  mutation addPlantNoteToPlant($id: ID!, $note: String!, $username: String!) {
+    addPlantNoteToPlant(id: $id, note: $note, username: $username) {
+      _id
+      latinName
+      commonName
+      img
+      idealLight
+      watering
+      plantNotes {
+        note
+        username
+        createdAt
+      }
     }
   }
 `;
@@ -139,16 +146,8 @@ export const ADD_USER = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation updateUser(
-    $id: ID!
-    $username: String!
-    $email: String!
-  ) {
-    updateUser(
-      id: $id
-      username: $username
-      email: $email
-    ) {
+  mutation updateUser($id: ID!, $username: String!, $email: String!) {
+    updateUser(id: $id, username: $username, email: $email) {
       token
       user {
         _id
@@ -162,7 +161,7 @@ export const UPDATE_USER = gql`
           idealLight
           watering
           username
-          
+
           plantNotes {
             noteId
             note
@@ -189,7 +188,7 @@ export const DELETE_USER = gql`
         idealLight
         watering
         username
-        
+
         plantNotes {
           noteId
           note
