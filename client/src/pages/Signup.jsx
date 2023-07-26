@@ -42,7 +42,6 @@ export default function SignUp() {
       console.error(e.message);
     },
     onCompleted: ({ userdata }) => {
-      console.log({ userdata, user: userdata.user, token: userdata.token });
       Auth.login(userdata.token);
       navigate("/");
     },
@@ -69,11 +68,7 @@ export default function SignUp() {
       isValidEmail(signUpForm.email);
     /* sets state value to disable button */
     setDisabled(!valid);
-    console.log(valid);
-    console.log(signUpForm);
-    console.log(isValidPassword(signUpForm.password));
-    console.log(isValidEmail(signUpForm.email));
-  }, [signUpForm]);
+  }, [isValidEmail, isValidPassword, signUpForm]);
 
   function handleChange(event) {
     return setSignUpForm((prev) => {
@@ -88,7 +83,6 @@ export default function SignUp() {
   function handleBlur(e) {
     const element = e.target.name;
     const value = e.target.value;
-    console.log({ element, value });
     switch (element) {
       case "username": {
         return setHasError((prev) => {
@@ -115,9 +109,6 @@ export default function SignUp() {
       }
     }
   }
-
-  console.log({ hasError });
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -131,7 +122,7 @@ export default function SignUp() {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <Avatar sx={{ m: 1, bgcolor: "#e1c340" }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
@@ -220,7 +211,7 @@ export default function SignUp() {
                 disabled={disabled}
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, bgcolor: "darkgreen" }}
+                sx={{ mt: 3, mb: 2, bgcolor: "#013927" }}
               >
                 Sign Up
               </Button>

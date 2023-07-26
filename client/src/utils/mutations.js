@@ -67,9 +67,9 @@ export const UPDATE_PLANT = gql`
       idealLight
       watering
       username
-      notification
+
       plantNotes {
-        _id
+        noteId
         note
         username
         createdAt
@@ -90,30 +90,35 @@ export const DELETE_PLANT = gql`
 `;
 
 export const ADD_PLANT_NOTE = gql`
-  mutation addPlantNote($note: String!, $username: String!) {
-    addPlantNote(note: $note, username: $username) {
+  mutation addPlantNoteToPlant($id: ID!, $note: String!, $username: String!) {
+    addPlantNoteToPlant(id: $id, note: $note, username: $username) {
       _id
-      note
-      username
-      createdAt
+      latinName
+      commonName
+      img
+      idealLight
+      watering
+      plantNotes {
+        note
+        username
+        createdAt
+      }
     }
   }
 `;
 
 export const DELETE_PLANT_NOTE = gql`
-  mutation deletePlantNote($id: ID!) {
-    deletePlantNote(id: $id) {
+  mutation DeletePlantNote($plantId: ID!, $noteId: String!) {
+    deletePlantNote(id: $plantId, noteId: $noteId) {
       _id
-      note
-      username
-      createdAt
     }
   }
 `;
+
 export const UPDATE_PLANT_NOTE = gql`
   mutation updatePlantNote($id: ID!, $note: String!) {
     updatePlantNote(id: $id, note: $note) {
-      _id
+      noteId
       note
       username
       createdAt
@@ -139,18 +144,8 @@ export const ADD_USER = gql`
 `;
 
 export const UPDATE_USER = gql`
-  mutation updateUser(
-    $id: ID!
-    $username: String!
-    $email: String!
-    $password: String!
-  ) {
-    updateUser(
-      id: $id
-      username: $username
-      email: $email
-      password: $password
-    ) {
+  mutation updateUser($id: ID!, $username: String!, $email: String!) {
+    updateUser(id: $id, username: $username, email: $email) {
       token
       user {
         _id
@@ -164,9 +159,9 @@ export const UPDATE_USER = gql`
           idealLight
           watering
           username
-          notification
+
           plantNotes {
-            _id
+            noteId
             note
             username
             createdAt
@@ -191,9 +186,9 @@ export const DELETE_USER = gql`
         idealLight
         watering
         username
-        notification
+
         plantNotes {
-          _id
+          noteId
           note
           username
           createdAt

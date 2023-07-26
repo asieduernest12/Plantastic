@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 export default function useAuthService() {
   const navigate = useNavigate();
   // get user data
-  const getProfile = (token) => {
+  const getProfile = () => {
+    const token = getToken();
     return decode(token);
   };
 

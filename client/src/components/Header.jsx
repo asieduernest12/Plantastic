@@ -1,6 +1,6 @@
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Badge, Button, ListItem } from "@mui/material";
+import { Button, ListItem } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import Divider from "@mui/material/Divider";
 import MuiDrawer from "@mui/material/Drawer";
@@ -11,16 +11,15 @@ import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-// get he house/home icon from material ui
 import {
   House as HouseIcon,
-  Notifications,
   Outbound,
   Person2Rounded as PersonIcon,
   Search,
   LocalFlorist,
 } from "@mui/icons-material/";
 import useAuthService from "../utils/authHook";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 const AppBar = styled(MuiAppBar, {
@@ -88,12 +87,8 @@ const useNavHandlers = () => {
   return { openDrawer, closeDrawer, navStates, toggleDrawer };
 };
 
-function Nav(
-  /** @type{{open:boolean,toggleDrawer:(e?:React.SyntheticEvent)=>any}}*/ {
-    open,
-    toggleDrawer,
-  }
-) {
+function Nav({ open, toggleDrawer }) {
+  const navigate = useNavigate();
   const Auth = useAuthService();
   function handleLogout() {
     Auth.logout();
@@ -103,7 +98,7 @@ function Nav(
       <AppBar position="absolute" open={open}>
         <Toolbar
           sx={{
-            bgcolor: "#333333",
+            bgcolor: "#013927",
             pr: "24px", // keep right padding when drawer closed
           }}
         >
@@ -126,15 +121,24 @@ function Nav(
             noWrap
             sx={{ flexGrow: 1 }}
           >
-            Plantastic
+            <span
+              style={{
+                fontFamily: "var(--mainFont)",
+              }}
+            >
+              Plantastic
+            </span>
           </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <Notifications />
-            </Badge>
-          </IconButton>
+          <IconButton color="inherit"></IconButton>
 
-          <IconButton color="inherit" disabled={!Auth.isLoggedIn()}>
+          <IconButton
+            color="inherit"
+            disabled={!Auth.isLoggedIn()}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/accountInfo");
+            }}
+          >
             <PersonIcon />
           </IconButton>
         </Toolbar>
