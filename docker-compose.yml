@@ -1,0 +1,9 @@
+services:
+  mongodb:
+  # use mongo alpine image
+    image: mongo:3.6.3
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data/db:/data/db
