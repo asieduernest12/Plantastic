@@ -131,7 +131,7 @@ const resolvers = {
         throw new Error("Failed to update user");
       }
     },
-    
+
     // Mutation to delete a user
     deleteUser: async (parent, { id }) => {
       try {
@@ -268,15 +268,13 @@ const resolvers = {
     deletePlantNote: async (parent, { id, noteId }) => {
       try {
         // Find the associated Plant and pull the note from the plantNotes array
-        const plant = await Plant.findByIdAndUpdate(
-          id,
-          { $pull: { plantNotes: { noteId: noteId } } },
-          { new: true }
-        );
+        const plant = await Plant.findById(id);
+        const notes = plant.plantNotes;
+        plant.notes = notes.filter((item) => item.id !== noteId);
+        plant.save();
         if (!plant) {
           throw new Error("Plant not found");
         }
-
         // Return the updated plant
         return plant;
       } catch (error) {

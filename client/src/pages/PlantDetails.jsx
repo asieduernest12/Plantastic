@@ -4,7 +4,11 @@ import { QUERY_PLANT, QUERY_USER } from "../utils/queries";
 import { useState } from "react";
 import { Button, IconButton, TextField, Switch } from "@mui/material";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { DELETE_PLANT, ADD_PLANT_NOTE } from "../utils/mutations";
+import {
+  DELETE_PLANT,
+  ADD_PLANT_NOTE,
+  DELETE_PLANT_NOTE,
+} from "../utils/mutations";
 import useAuthService from "../utils/authHook";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import NoteAddIcon from "@mui/icons-material/NoteAdd";
@@ -44,6 +48,12 @@ export default function PlantDetails() {
       client.reFetchObservableQueries();
     },
   });
+  const [deletePlantNote] = useMutation(DELETE_PLANT_NOTE, {
+    onCompleted: () => {
+      setNote("");
+      client.reFetchObservableQueries();
+    },
+  });
 
   const handleAddNote = async () => {
     if (note.trim() === "") {
@@ -70,6 +80,10 @@ export default function PlantDetails() {
   }
   async function deletePlant() {
     deletePlantById({ variables: { id: plantId } });
+  }
+
+  async function handleDeleteNote(noteId) {
+    deletePlantNote({ variables: { plantId, noteId } });
   }
 
   return (
@@ -177,30 +191,38 @@ export default function PlantDetails() {
               width: "100%",
             }}
           >
-            {data?.plant?.plantNotes.map((plantNote) => (
-              <div
-                key={plantNote._id}
-                style={{
-                  marginBottom: "10px",
-                  backgroundColor: "#cae6d5",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div key={plantNote._id}>
-                  <p style={{ paddingLeft: "20px" }}>{plantNote.note}</p>
+            {data?.plant?.plantNotes.map((plantNote) => {
+              console.log({ plantNote });
+              return (
+                <div
+                  key={plantNote._id}
+                  style={{
+                    marginBottom: "10px",
+                    backgroundColor: "#cae6d5",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div key={plantNote._id}>
+                    <p style={{ paddingLeft: "20px" }}>{plantNote.note}</p>
+                  </div>
+                  <div>
+                    <IconButton
+                      key={plantNote.noteId}
+                      aria-label="delete"
+                      size="large"
+                      color="success"
+                    >
+                      <DeleteForeverIcon
+                        fontSize="inherit"
+                        onClick={() => handleDeleteNote(plantNote.noteId)}
+                      />
+                    </IconButton>
+                  </div>
                 </div>
-                <div>
-                  <IconButton aria-label="add" size="large" color="success">
-                    <NoteAddIcon fontSize="inherit" />
-                  </IconButton>
-                  <IconButton aria-label="delete" size="large" color="error">
-                    <DeleteForeverIcon fontSize="inherit" />
-                  </IconButton>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
