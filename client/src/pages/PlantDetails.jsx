@@ -11,7 +11,6 @@ import {
 } from "../utils/mutations";
 import useAuthService from "../utils/authHook";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
 import client from "../client";
 import "./plantDetails.css";
 
@@ -83,6 +82,7 @@ export default function PlantDetails() {
   }
 
   async function handleDeleteNote(noteId) {
+    console.log({ noteId });
     deletePlantNote({ variables: { plantId, noteId } });
   }
 

@@ -267,16 +267,19 @@ const resolvers = {
     // mutation to delete plant note from user's plant notes
     deletePlantNote: async (parent, { id, noteId }) => {
       try {
-        // Find the associated Plant and pull the note from the plantNotes array
-        const plant = await Plant.findById(id);
-        const notes = plant.plantNotes;
-        plant.notes = notes.filter((item) => item.id !== noteId);
-        plant.save();
-        if (!plant) {
+        // Find the associated Plant and update the plantNotes array
+        const updatedPlant = await Plant.findOneAndUpdate(
+          { _id: id },
+          { $pull: { plantNotes: { noteId: noteId } } },
+          { new: true } // Return the updated plant, if false, it returns the original plant
+        );
+
+        if (!updatedPlant) {
           throw new Error("Plant not found");
         }
+
         // Return the updated plant
-        return plant;
+        return updatedPlant;
       } catch (error) {
         console.error(error.message);
         throw new Error("Failed to delete plant note");
