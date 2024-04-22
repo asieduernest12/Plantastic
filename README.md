@@ -34,6 +34,8 @@ When a user clicks add plant, they are redirected to their "My Garden" view wher
 
 The plant details view has a switch to turn email reminders on or off (this feature is still in development). They can also view helpful information about their plant, remove it from their garden, or add notes that will be displayed below.
 
+
+
 ## Credits
 
 - [John Elmore](https://github.com/Letmego1st)
@@ -41,6 +43,8 @@ The plant details view has a switch to turn email reminders on or off (this feat
 - [Paul Mendoza](https://github.com/pvmend)
 - [Kate Rogers](https://github.com/KateMcRo)
 - [Justin Rossi](https://github.com/Jrossi425)
+
+Initial brand and design concepts on [Figma](https://www.figma.com/file/m8oHehHSpRv4UVn1XF3o66/Untitled?type=design&node-id=0%3A1&mode=design&t=EyK7GTrJV3yFUNgD-1)
 
 Koding 101 [Nodemailer Tutorial](https://www.youtube.com/watch?v=MJhsVDpYzQs)
 
